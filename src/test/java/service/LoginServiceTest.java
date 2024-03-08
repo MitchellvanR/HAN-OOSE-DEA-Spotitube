@@ -37,13 +37,21 @@ public class LoginServiceTest extends TestCase {
         assertEquals(user.getToken(), result.getToken());
     }
 
-    public void testLoginFailure() {
+    public void testInvalidUsernameLogin() {
         // Arrange
-        Credentials credentials = new Credentials("username", "wrong_password");
+        Credentials credentials = new Credentials("invalid_username", "password");
         when(mockLoginDao.getCredentials(credentials)).thenReturn(new Credentials());
 
         // Act & Assert
         assertThrows(InvalidCredentialsException.class, () -> { sut.login(credentials); });
     }
 
+    public void testInvalidPasswordLogin() {
+        // Arrange
+        Credentials credentials = new Credentials("invalid_username", "password");
+        when(mockLoginDao.getCredentials(credentials)).thenReturn(new Credentials());
+
+        // Act & Assert
+        assertThrows(InvalidCredentialsException.class, () -> { sut.login(credentials); });
+    }
 }

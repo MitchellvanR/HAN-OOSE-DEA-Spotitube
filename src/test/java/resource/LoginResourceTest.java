@@ -36,9 +36,18 @@ public class LoginResourceTest extends TestCase {
         assertEquals(user, response.getEntity());
     }
 
-    public void testInvalidCredentialsLogin() {
+    public void testInvalidUsernameLogin() {
         // Arrange
-        Credentials credentials = new Credentials("username", "wrong_password");
+        Credentials credentials = new Credentials("invalid_username", "password");
+        doThrow(InvalidCredentialsException.class).when(mockLoginService).login(credentials);
+
+        // Act & Assert
+        assertThrows(InvalidCredentialsException.class, () -> { sut.login(credentials); });
+    }
+
+    public void testInvalidPasswordLogin() {
+        // Arrange
+        Credentials credentials = new Credentials("username", "invalid_password");
         doThrow(InvalidCredentialsException.class).when(mockLoginService).login(credentials);
 
         // Act & Assert
