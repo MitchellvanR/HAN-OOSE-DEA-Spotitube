@@ -1,5 +1,6 @@
 package datasource.dao;
 
+import datasource.exceptions.SQLQueryException;
 import domain.dto.login.Credentials;
 
 import java.sql.ResultSet;
@@ -16,7 +17,7 @@ public class LoginDao extends Dao {
             }
             return localCredentials;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SQLQueryException();
         } finally {
             disconnect();
         }

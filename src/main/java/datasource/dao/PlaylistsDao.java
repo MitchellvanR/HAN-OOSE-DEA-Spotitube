@@ -1,5 +1,6 @@
 package datasource.dao;
 
+import datasource.exceptions.SQLQueryException;
 import domain.dto.playlists.ListOfPlaylists;
 import domain.dto.playlists.Playlist;
 
@@ -26,7 +27,7 @@ public class PlaylistsDao extends Dao {
             listOfPlaylists.setPlaylists(playlists);
             return listOfPlaylists;
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new SQLQueryException();
         } finally {
             disconnect();
         }
