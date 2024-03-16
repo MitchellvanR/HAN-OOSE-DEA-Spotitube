@@ -16,7 +16,6 @@ public class LoginServiceTest extends TestCase {
     private LoginService sut;
     private LoginDao mockLoginDao;
 
-    @Before
     public void setUp() {
         mockLoginDao = mock(LoginDao.class);
         sut = new LoginService();

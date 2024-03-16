@@ -15,7 +15,6 @@ public class LoginResourceTest extends TestCase {
     private LoginResource sut;
     private LoginService mockLoginService;
 
-    @Before
     public void setUp() {
         mockLoginService = mock(LoginService.class);
         sut = new LoginResource();
