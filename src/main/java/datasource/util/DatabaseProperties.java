@@ -25,7 +25,7 @@ public class DatabaseProperties {
             } catch (IOException e) {
                 throw new PropertyLoadException();
             }
-            String connectionString = properties.getProperty("connectionString");
+            String connectionString = connectionString();
             connectionString = connectionString
                     .replace("${DB_SERVER}", dotenv.get("DB_SERVER"))
                     .replace("${DB_PORT}", dotenv.get("DB_PORT"))
@@ -43,7 +43,7 @@ public class DatabaseProperties {
 
     private Connection connect() {
         try {
-            return DriverManager.getConnection(properties.getProperty("connectionString"));
+            return DriverManager.getConnection(connectionString());
         } catch (SQLException e) {
             throw new SQLConnectionException();
         }
@@ -59,10 +59,6 @@ public class DatabaseProperties {
 
     public String connectionString() {
         return properties.getProperty("connectionString");
-    }
-
-    public String driver() {
-        return properties.getProperty("driver");
     }
 
     public Connection getConnection() {
