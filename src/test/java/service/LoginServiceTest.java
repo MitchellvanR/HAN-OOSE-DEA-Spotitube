@@ -1,11 +1,9 @@
 package service;
 
 import datasource.dao.LoginDao;
-import domain.dto.Credentials;
-import domain.dto.User;
+import domain.dto.login.Credentials;
+import domain.dto.login.User;
 import junit.framework.TestCase;
-import org.junit.Before;
-import org.junit.Test;
 import service.exceptions.InvalidCredentialsException;
 
 import static org.junit.Assert.assertThrows;

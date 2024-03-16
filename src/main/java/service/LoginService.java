@@ -1,8 +1,8 @@
 package service;
 
 import datasource.dao.LoginDao;
-import domain.dto.Credentials;
-import domain.dto.User;
+import domain.dto.login.Credentials;
+import domain.dto.login.User;
 import jakarta.inject.Inject;
 import service.exceptions.InvalidCredentialsException;
 
@@ -26,5 +26,4 @@ public class LoginService {
     public void setLoginDao(LoginDao loginDao) {
         this.loginDao = loginDao;
     }
-
 }

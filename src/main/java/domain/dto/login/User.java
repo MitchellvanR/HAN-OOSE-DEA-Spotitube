@@ -1,4 +1,4 @@
-package domain.dto;
+package domain.dto.login;
 
 public class User {
     private String token;

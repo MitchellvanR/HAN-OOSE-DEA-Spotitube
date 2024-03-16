@@ -1,6 +1,6 @@
 package datasource.dao;
 
-import domain.dto.Credentials;
+import domain.dto.login.Credentials;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
