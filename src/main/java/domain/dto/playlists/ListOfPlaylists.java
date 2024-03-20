@@ -8,14 +8,17 @@ public class ListOfPlaylists {
     private ArrayList<Playlist> playlists;
     private int length;
 
+    public ListOfPlaylists() {
+        length = calculateTotalLength();
+    }
+
     public ListOfPlaylists(ArrayList<Playlist> playlists) {
         this.playlists = playlists;
         length = calculateTotalLength();
     }
 
-    public ListOfPlaylists() {}
-
     private int calculateTotalLength() {
+        if (playlists == null || playlists.isEmpty()) return 0;
         int totalLength = 0;
         for (Playlist playlist : playlists) {
             for (Track track : playlist.getTracks()) {
@@ -31,5 +34,10 @@ public class ListOfPlaylists {
 
     public void setPlaylists(ArrayList<Playlist> playlists) {
         this.playlists = playlists;
+        length = calculateTotalLength();
+    }
+
+    public int getLength() {
+        return length;
     }
 }
