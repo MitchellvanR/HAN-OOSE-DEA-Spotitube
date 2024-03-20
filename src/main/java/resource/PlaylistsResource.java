@@ -1,5 +1,6 @@
 package resource;
 
+import domain.dto.playlists.Playlist;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -21,6 +22,13 @@ public class PlaylistsResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deletePlaylist(@QueryParam("token") String token, @PathParam("id") String id) {
         return Response.ok().entity(playlistsService.deletePlaylist(token, id)).build();
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addPlaylist(@QueryParam("token") String token, Playlist playlist) {
+        return Response.ok().entity(playlistsService.addPlaylist(token, playlist)).build();
     }
 
     @Inject

@@ -44,6 +44,17 @@ public class PlaylistsDao extends Dao {
         }
     }
 
+    public ListOfPlaylists addPlaylist(String token, String owner, String playlistName) {
+        try {
+            prepareStatement("INSERT INTO playlist VALUES ('" + playlistName + "', '" + owner + "')").execute();
+            return getAllPlaylists(token);
+        } catch (SQLException e) {
+            throw new SQLQueryException();
+        } finally {
+            disconnect();
+        }
+    }
+
     private boolean evaluatePlaylistOwnership(String owner, String token) {
         return owner.equals(token);
     }
