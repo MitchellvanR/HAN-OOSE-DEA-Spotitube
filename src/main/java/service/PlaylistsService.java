@@ -21,6 +21,10 @@ public class PlaylistsService {
         return playlistsDao.addPlaylist(token, owner, playlist.getName());
     }
 
+    public ListOfPlaylists editPlaylist(String token, String id, Playlist playlist) {
+        return playlistsDao.editPlaylist(token, id, playlist);
+    }
+
     @Inject
     public void setPlaylistsDao(PlaylistsDao playlistsDao) {
         this.playlistsDao = playlistsDao;

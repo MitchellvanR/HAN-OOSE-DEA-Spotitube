@@ -31,6 +31,14 @@ public class PlaylistsResource {
         return Response.ok().entity(playlistsService.addPlaylist(token, playlist)).build();
     }
 
+    @PUT
+    @Path("/{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response editPlaylist(@QueryParam("token") String token, @PathParam("id") String id, Playlist playlist) {
+        return Response.ok().entity(playlistsService.editPlaylist(token, id, playlist)).build();
+    }
+
     @Inject
     public void setPlaylistsService(PlaylistsService playlistsService) {
         this.playlistsService = playlistsService;

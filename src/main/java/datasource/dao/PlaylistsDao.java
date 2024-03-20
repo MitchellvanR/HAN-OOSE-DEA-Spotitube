@@ -55,6 +55,17 @@ public class PlaylistsDao extends Dao {
         }
     }
 
+    public ListOfPlaylists editPlaylist(String token, String id, Playlist playlist) {
+        try {
+            prepareStatement("UPDATE playlist SET name = '" + playlist.getName() + "' WHERE id='" + id + "' AND owner='" + token + "'").execute();
+            return getAllPlaylists(token);
+        } catch (SQLException e) {
+            throw new SQLQueryException();
+        } finally {
+            disconnect();
+        }
+    }
+
     private boolean evaluatePlaylistOwnership(String owner, String token) {
         return owner.equals(token);
     }
