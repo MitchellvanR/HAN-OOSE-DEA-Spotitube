@@ -11,6 +11,10 @@ public class PlaylistsService {
         return playlistsDao.getAllPlaylists(token);
     }
 
+    public ListOfPlaylists deletePlaylist(String token, String id) {
+        return playlistsDao.deletePlaylist(token, id);
+    }
+
     @Inject
     public void setPlaylistsDao(PlaylistsDao playlistsDao) {
         this.playlistsDao = playlistsDao;

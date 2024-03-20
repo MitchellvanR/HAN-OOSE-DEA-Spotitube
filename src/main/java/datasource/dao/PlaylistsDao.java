@@ -33,6 +33,17 @@ public class PlaylistsDao extends Dao {
         }
     }
 
+    public ListOfPlaylists deletePlaylist(String token, String id) {
+        try {
+            prepareStatement("DELETE FROM playlist WHERE id='" + id + "' AND owner='" + token + "'").execute();
+            return getAllPlaylists(token);
+        } catch (SQLException e) {
+            throw new SQLQueryException();
+        } finally {
+            disconnect();
+        }
+    }
+
     private boolean evaluatePlaylistOwnership(String owner, String token) {
         return owner.equals(token);
     }
