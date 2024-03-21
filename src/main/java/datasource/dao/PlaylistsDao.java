@@ -1,9 +1,13 @@
 package datasource.dao;
 
+import datasource.exceptions.InvalidValueException;
 import datasource.exceptions.SQLQueryException;
 import domain.dto.playlists.ListOfPlaylists;
 import domain.dto.playlists.Playlist;
+import domain.dto.tracks.ListOfTracks;
+import domain.dto.tracks.Track;
 
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -66,7 +70,44 @@ public class PlaylistsDao extends Dao {
         }
     }
 
+    public ListOfTracks getTracksFromPlaylist(String token, String id) {
+        ListOfTracks listOfTracks = new ListOfTracks();
+        ArrayList<Track> tracks = new ArrayList<>();
+        try (ResultSet resultSet = prepareStatement("SELECT * FROM track JOIN track_in_playlist ON track.id = track_in_playlist.trackId WHERE track_in_playlist.playlistId = '" + id + "'").executeQuery()) {
+            while (resultSet.next()) {
+                System.out.println("Resultset obtained. Mapping data now");
+                tracks.add(new Track(
+                        resultSet.getString("title"),
+                        resultSet.getString("performer"),
+                        resultSet.getInt("duration"),
+                        resultSet.getString("album"),
+                        resultSet.getInt("playcount"),
+                        convertDateToString(resultSet.getDate("publicationDate")),
+                        resultSet.getString("trackDescription"),
+                        convertStringToBoolean(resultSet.getString("offlineAvailable"))
+                ));
+            }
+            listOfTracks.setTracks(tracks);
+            return listOfTracks;
+        } catch (SQLException e) {
+            throw new SQLQueryException();
+        } finally {
+            disconnect();
+        }
+    }
+
     private boolean evaluatePlaylistOwnership(String owner, String token) {
         return owner.equals(token);
+    }
+
+    private boolean convertStringToBoolean(String booleanStringValue) {
+        if (booleanStringValue.equals("false")) return false;
+        if (booleanStringValue.equals("true")) return true;
+        throw new InvalidValueException();
+    }
+
+    private String convertDateToString(Date date) {
+        if (date != null) return date.toString();
+        return null;
     }
 }
