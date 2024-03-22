@@ -11,14 +11,14 @@ import resource.exceptions.UserNotLoggedInException;
 import service.TracksService;
 
 @Path("/tracks")
-public class TracksResource {
+public class TracksResource extends Resource {
 
     private TracksService tracksService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllTracks(@QueryParam("token") String token) {
-        if (token == null) throw new UserNotLoggedInException();
+        validateUserLogin(token);
         return Response.ok().entity(tracksService.getAllTracks()).build();
     }
 

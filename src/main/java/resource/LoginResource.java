@@ -11,7 +11,7 @@ import domain.dto.login.Credentials;
 import service.LoginService;
 
 @Path("/login")
-public class LoginResource {
+public class LoginResource extends Resource {
 
     private LoginService loginService;
 

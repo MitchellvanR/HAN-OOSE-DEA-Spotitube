@@ -10,14 +10,14 @@ import service.PlaylistsService;
 import service.TracksService;
 
 @Path("/playlists")
-public class PlaylistsResource {
+public class PlaylistsResource extends Resource {
     private PlaylistsService playlistsService;
     private TracksService tracksService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPlaylists(@QueryParam("token") String token) {
-        if (token == null) throw new UserNotLoggedInException();
+        validateUserLogin(token);
         return Response.ok().entity(playlistsService.getAllPlaylists(token)).build();
     }
 
@@ -25,7 +25,7 @@ public class PlaylistsResource {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deletePlaylist(@QueryParam("token") String token, @PathParam("id") String id) {
-        if (token == null) throw new UserNotLoggedInException();
+        validateUserLogin(token);
         return Response.ok().entity(playlistsService.deletePlaylist(token, id)).build();
     }
 
@@ -33,7 +33,7 @@ public class PlaylistsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addPlaylist(@QueryParam("token") String token, Playlist playlist) {
-        if (token == null) throw new UserNotLoggedInException();
+        validateUserLogin(token);
         return Response.ok().entity(playlistsService.addPlaylist(token, playlist)).build();
     }
 
@@ -42,7 +42,7 @@ public class PlaylistsResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response editPlaylist(@QueryParam("token") String token, @PathParam("id") String id, Playlist playlist) {
-        if (token == null) throw new UserNotLoggedInException();
+        validateUserLogin(token);
         return Response.ok().entity(playlistsService.editPlaylist(token, id, playlist)).build();
     }
 
@@ -50,7 +50,7 @@ public class PlaylistsResource {
     @Path("/{id}/tracks")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTracksFromPlaylist(@QueryParam("token") String token, @PathParam("id") String id) {
-        if (token == null) throw new UserNotLoggedInException();
+        validateUserLogin(token);
         return Response.ok().entity(tracksService.getTracksFromPlaylist(id)).build();
     }
 
