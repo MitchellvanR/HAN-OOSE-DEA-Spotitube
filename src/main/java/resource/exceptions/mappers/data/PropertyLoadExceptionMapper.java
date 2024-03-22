@@ -1,4 +1,4 @@
-package resource.exceptions.data;
+package resource.exceptions.mappers.data;
 
 import datasource.exceptions.PropertyLoadException;
 import jakarta.ws.rs.core.Response;

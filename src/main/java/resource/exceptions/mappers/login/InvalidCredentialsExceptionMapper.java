@@ -1,4 +1,4 @@
-package resource.exceptions.login;
+package resource.exceptions.mappers.login;
 
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
