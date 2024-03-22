@@ -19,6 +19,10 @@ public class TracksService {
         return tracksDao.addTrackToPlaylist(id, track);
     }
 
+    public ListOfTracks deleteTrackFromPlaylist(String playlistId, String trackId) {
+        return tracksDao.deleteTrackFromPlaylist(playlistId, trackId);
+    }
+
     @Inject
     public void setTracksDao(TracksDao tracksDao) {
         this.tracksDao = tracksDao;

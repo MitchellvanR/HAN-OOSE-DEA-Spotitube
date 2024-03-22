@@ -32,6 +32,17 @@ public class TracksDao extends Dao {
         }
     }
 
+    public ListOfTracks deleteTrackFromPlaylist(String playlistId, String trackId) {
+        try {
+            prepareStatement(String.format(SQLString.DELETE_TRACK_FROM_PLAYLIST.label, playlistId, trackId)).execute();
+            return getTracksFromPlaylist(playlistId);
+        } catch (SQLException e) {
+            throw new SQLQueryException();
+        } finally {
+            disconnect();
+        }
+    }
+
     private ListOfTracks trackGetRequest(String sqlString) {
         try (ResultSet resultSet = prepareStatement(sqlString).executeQuery()) {
             return trackMapper.mapTracksFromResultSet(resultSet);

@@ -64,6 +64,14 @@ public class PlaylistsResource extends Resource {
         return Response.ok().entity(tracksService.addTrackToPlaylist(id, track)).build();
     }
 
+    @DELETE
+    @Path("/{playlistId}/tracks/{trackId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteTrackFromPlaylist(@QueryParam("token") String token, @PathParam("playlistId") String playlistId, @PathParam("trackId") String trackId) {
+        validateUserLogin(token);
+        return Response.ok().entity(tracksService.deleteTrackFromPlaylist(playlistId, trackId)).build();
+    }
+
     @Inject
     public void setPlaylistsService(PlaylistsService playlistsService) {
         this.playlistsService = playlistsService;
