@@ -10,7 +10,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class TracksDao extends Dao {
-
     private TrackMapper trackMapper;
 
     public ListOfTracks getTracksFromPlaylist(String id) {
@@ -22,7 +21,6 @@ public class TracksDao extends Dao {
     }
 
     private ListOfTracks trackGetRequest(String sqlString) {
-        System.out.println(sqlString);
         try (ResultSet resultSet = prepareStatement(sqlString).executeQuery()) {
             return trackMapper.mapTracksFromResultSet(resultSet);
         } catch (SQLException e) {
