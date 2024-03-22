@@ -4,6 +4,7 @@ import datasource.datamappers.TrackMapper;
 import datasource.exceptions.SQLQueryException;
 import datasource.util.SQLString;
 import domain.dto.tracks.ListOfTracks;
+import domain.dto.tracks.Track;
 import jakarta.inject.Inject;
 
 import java.sql.ResultSet;
@@ -18,6 +19,17 @@ public class TracksDao extends Dao {
 
     public ListOfTracks getAllTracks() {
         return trackGetRequest(SQLString.GET_ALL_TRACKS.label);
+    }
+
+    public ListOfTracks addTrackToPlaylist(String id, Track track) {
+        try {
+            prepareStatement(String.format(SQLString.ADD_TRACK_TO_PLAYLIST.label, Integer.parseInt(id), track.getId())).execute();
+            return getTracksFromPlaylist(id);
+        } catch (SQLException e) {
+            throw new SQLQueryException();
+        } finally {
+            disconnect();
+        }
     }
 
     private ListOfTracks trackGetRequest(String sqlString) {

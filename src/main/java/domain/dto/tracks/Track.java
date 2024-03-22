@@ -1,6 +1,7 @@
 package domain.dto.tracks;
 
 public class Track {
+    private int id;
     private String title;
     private String performer;
     private int duration;
@@ -10,7 +11,10 @@ public class Track {
     private String description;
     private boolean offlineAvailable;
 
-    public Track(String title, String performer, int duration, String album, int playcount, String publicationDate, String description, boolean offlineAvailable) {
+    public Track() {}
+
+    public Track(int id, String title, String performer, int duration, String album, int playcount, String publicationDate, String description, boolean offlineAvailable) {
+        this.id = id;
         this.title = title;
         this.performer = performer;
         this.duration = duration;
@@ -19,6 +23,12 @@ public class Track {
         this.publicationDate = publicationDate;
         this.description = description;
         this.offlineAvailable = offlineAvailable;
+    }
+
+    public int getId() { return id; }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {

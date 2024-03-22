@@ -1,6 +1,7 @@
 package resource;
 
 import domain.dto.playlists.Playlist;
+import domain.dto.tracks.Track;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -52,6 +53,15 @@ public class PlaylistsResource extends Resource {
     public Response getTracksFromPlaylist(@QueryParam("token") String token, @PathParam("id") String id) {
         validateUserLogin(token);
         return Response.ok().entity(tracksService.getTracksFromPlaylist(id)).build();
+    }
+
+    @POST
+    @Path("/{id}/tracks")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addTrackToPlaylist(@QueryParam("token") String token, @PathParam("id") String id, Track track) {
+        validateUserLogin(token);
+        return Response.ok().entity(tracksService.addTrackToPlaylist(id, track)).build();
     }
 
     @Inject

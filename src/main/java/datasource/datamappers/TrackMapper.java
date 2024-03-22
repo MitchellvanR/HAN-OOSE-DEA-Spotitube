@@ -17,6 +17,7 @@ public class TrackMapper {
         ArrayList<Track> tracks = new ArrayList<>();
         while (resultSet.next()) {
             tracks.add(new Track(
+                    resultSet.getInt("id"),
                     resultSet.getString("title"),
                     resultSet.getString("performer"),
                     resultSet.getInt("duration"),
