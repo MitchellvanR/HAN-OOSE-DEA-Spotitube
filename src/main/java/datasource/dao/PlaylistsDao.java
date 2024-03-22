@@ -6,6 +6,7 @@ import domain.dto.playlists.ListOfPlaylists;
 import domain.dto.playlists.Playlist;
 import domain.dto.tracks.ListOfTracks;
 import domain.dto.tracks.Track;
+import jakarta.inject.Inject;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -63,32 +64,6 @@ public class PlaylistsDao extends Dao {
         try {
             prepareStatement("UPDATE playlist SET name = '" + playlist.getName() + "' WHERE id='" + id + "' AND owner='" + token + "'").execute();
             return getAllPlaylists(token);
-        } catch (SQLException e) {
-            throw new SQLQueryException();
-        } finally {
-            disconnect();
-        }
-    }
-
-    public ListOfTracks getTracksFromPlaylist(String token, String id) {
-        ListOfTracks listOfTracks = new ListOfTracks();
-        ArrayList<Track> tracks = new ArrayList<>();
-        try (ResultSet resultSet = prepareStatement("SELECT * FROM track JOIN track_in_playlist ON track.id = track_in_playlist.trackId WHERE track_in_playlist.playlistId = '" + id + "'").executeQuery()) {
-            while (resultSet.next()) {
-                System.out.println("Resultset obtained. Mapping data now");
-                tracks.add(new Track(
-                        resultSet.getString("title"),
-                        resultSet.getString("performer"),
-                        resultSet.getInt("duration"),
-                        resultSet.getString("album"),
-                        resultSet.getInt("playcount"),
-                        convertDateToString(resultSet.getDate("publicationDate")),
-                        resultSet.getString("trackDescription"),
-                        convertStringToBoolean(resultSet.getString("offlineAvailable"))
-                ));
-            }
-            listOfTracks.setTracks(tracks);
-            return listOfTracks;
         } catch (SQLException e) {
             throw new SQLQueryException();
         } finally {

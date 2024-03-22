@@ -13,10 +13,11 @@ import java.sql.SQLException;
 import java.util.Properties;
 
 public class DatabaseProperties {
+    private static volatile DatabaseProperties instance;
     private final Properties properties;
-    private final Connection connection;
+    private Connection connection;
 
-    public DatabaseProperties() {
+    private DatabaseProperties() {
         properties = new Properties();
         try {
             Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
@@ -25,43 +26,56 @@ public class DatabaseProperties {
             } catch (IOException e) {
                 throw new PropertyLoadException();
             }
-            String connectionString = connectionString();
-            connectionString = connectionString
-                    .replace("${DB_SERVER}", dotenv.get("DB_SERVER"))
-                    .replace("${DB_PORT}", dotenv.get("DB_PORT"))
-                    .replace("${DB_DATABASE}", dotenv.get("DB_DATABASE"))
-                    .replace("${DB_USER}", dotenv.get("DB_USER"))
-                    .replace("${DB_PASSWORD}", dotenv.get("DB_PASSWORD"));
-
+            String connectionString = connectionString(dotenv);
             properties.setProperty("connectionString", connectionString);
-
-            connection = connect();
         } catch (Exception e) {
             throw new SQLConnectionException();
         }
     }
 
-    private Connection connect() {
-        try {
-            return DriverManager.getConnection(connectionString());
-        } catch (SQLException e) {
-            throw new SQLConnectionException();
+    public static DatabaseProperties getInstance() {
+        if (instance == null) {
+            synchronized (DatabaseProperties.class) {
+                if (instance == null) {
+                    instance = new DatabaseProperties();
+                }
+            }
         }
+        return instance;
     }
 
-    public void disconnect() {
-        try {
-            connection.close();
-        } catch (SQLException e) {
-            throw new SQLDisconnectException();
-        }
+    private String connectionString(Dotenv dotenv) {
+        return properties.getProperty("connectionString")
+                .replace("${DB_SERVER}", dotenv.get("DB_SERVER"))
+                .replace("${DB_PORT}", dotenv.get("DB_PORT"))
+                .replace("${DB_DATABASE}", dotenv.get("DB_DATABASE"))
+                .replace("${DB_USER}", dotenv.get("DB_USER"))
+                .replace("${DB_PASSWORD}", dotenv.get("DB_PASSWORD"));
     }
 
-    public String connectionString() {
-        return properties.getProperty("connectionString");
+    private Connection createConnection() throws SQLException {
+        return DriverManager.getConnection(properties.getProperty("connectionString"));
     }
 
     public Connection getConnection() {
+        if (connection == null) {
+            try {
+                connection = createConnection();
+            } catch (SQLException e) {
+                throw new SQLConnectionException();
+            }
+        }
         return connection;
+    }
+
+    public void disconnect() {
+        if (connection != null) {
+            try {
+                connection.close();
+                connection = null;
+            } catch (SQLException e) {
+                throw new SQLDisconnectException();
+            }
+        }
     }
 }

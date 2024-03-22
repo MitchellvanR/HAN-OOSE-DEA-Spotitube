@@ -1,6 +1,7 @@
 package service;
 
 import datasource.dao.PlaylistsDao;
+import datasource.dao.TracksDao;
 import domain.dto.playlists.ListOfPlaylists;
 import domain.dto.playlists.Playlist;
 import domain.dto.tracks.ListOfTracks;
@@ -24,10 +25,6 @@ public class PlaylistsService {
 
     public ListOfPlaylists editPlaylist(String token, String id, Playlist playlist) {
         return playlistsDao.editPlaylist(token, id, playlist);
-    }
-
-    public ListOfTracks getTracksFromPlaylist(String token, String id) {
-        return playlistsDao.getTracksFromPlaylist(token, id);
     }
 
     @Inject

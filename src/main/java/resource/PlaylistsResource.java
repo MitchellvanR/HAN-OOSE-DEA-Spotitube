@@ -7,10 +7,12 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import resource.exceptions.UserNotLoggedInException;
 import service.PlaylistsService;
+import service.TracksService;
 
 @Path("/playlists")
 public class PlaylistsResource {
     private PlaylistsService playlistsService;
+    private TracksService tracksService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -49,11 +51,14 @@ public class PlaylistsResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTracksFromPlaylist(@QueryParam("token") String token, @PathParam("id") String id) {
         if (token == null) throw new UserNotLoggedInException();
-        return Response.ok().entity(playlistsService.getTracksFromPlaylist(token, id)).build();
+        return Response.ok().entity(tracksService.getTracksFromPlaylist(id)).build();
     }
 
     @Inject
     public void setPlaylistsService(PlaylistsService playlistsService) {
         this.playlistsService = playlistsService;
     }
+
+    @Inject
+    public void setTracksService(TracksService tracksService) { this.tracksService = tracksService; }
 }
