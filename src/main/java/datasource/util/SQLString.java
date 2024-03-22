@@ -1,6 +1,7 @@
 package datasource.util;
 
 public enum SQLString {
+    GET_CREDENTIALS("SELECT * FROM users WHERE username='%s' AND password='%s'"),
     GET_ALL_PLAYLISTS("SELECT * FROM playlist"),
     DELETE_PLAYLIST("DELETE FROM playlist WHERE id='%s' AND owner='%s'"),
     ADD_PLAYLIST("INSERT INTO playlist VALUES ('%s', '%s')"),
