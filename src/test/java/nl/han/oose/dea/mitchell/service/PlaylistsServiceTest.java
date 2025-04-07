@@ -11,22 +11,22 @@ import static org.mockito.Mockito.when;
 public class PlaylistsServiceTest extends TestCase {
     private PlaylistsService sut;
     private PlaylistsDao mockPlaylistsDao;
-    private String token;
+    private int userid;
 
     public void setUp() {
         mockPlaylistsDao = mock(PlaylistsDao.class);
         sut = new PlaylistsService();
         sut.setPlaylistsDao(mockPlaylistsDao);
-        token = "1234-1234-1234";
+        userid = 1;
     }
 
     public void testGetAllPlaylists() {
         // Arrange
         ListOfPlaylists expected = new ListOfPlaylists();
-        when(mockPlaylistsDao.getAllPlaylists(token)).thenReturn(expected);
+        when(mockPlaylistsDao.getAllPlaylists(userid)).thenReturn(expected);
 
         // Act
-        ListOfPlaylists actual = sut.getAllPlaylists(token);
+        ListOfPlaylists actual = sut.getAllPlaylists(userid);
 
         // Assert
         assertEquals(expected, actual);
@@ -36,10 +36,10 @@ public class PlaylistsServiceTest extends TestCase {
         // Arrange
         String playlistId = "1";
         ListOfPlaylists expected = new ListOfPlaylists();
-        when(mockPlaylistsDao.deletePlaylist(token, playlistId)).thenReturn(expected);
+        when(mockPlaylistsDao.deletePlaylist(userid, playlistId)).thenReturn(expected);
 
         // Act
-        ListOfPlaylists actual = sut.deletePlaylist(token, playlistId);
+        ListOfPlaylists actual = sut.deletePlaylist(userid, playlistId);
 
         // Assert
         assertEquals(expected, actual);
@@ -51,10 +51,10 @@ public class PlaylistsServiceTest extends TestCase {
         playlist.setOwner(true);
         playlist.setName("New Playlist");
         ListOfPlaylists expected = new ListOfPlaylists();
-        when(mockPlaylistsDao.addPlaylist(token, token, "New Playlist")).thenReturn(expected);
+        when(mockPlaylistsDao.addPlaylist(userid, "New Playlist")).thenReturn(expected);
 
         // Act
-        ListOfPlaylists actual = sut.addPlaylist(token, playlist);
+        ListOfPlaylists actual = sut.addPlaylist(userid, playlist);
 
         // Assert
         assertEquals(expected, actual);
@@ -66,10 +66,10 @@ public class PlaylistsServiceTest extends TestCase {
         playlist.setOwner(false);
         playlist.setName("Unowned Playlist");
         ListOfPlaylists expected = new ListOfPlaylists();
-        when(mockPlaylistsDao.addPlaylist(token, "unknown", "Unowned Playlist")).thenReturn(expected);
+        when(mockPlaylistsDao.addPlaylist(userid, "Unowned Playlist")).thenReturn(expected);
 
         // Act
-        ListOfPlaylists actual = sut.addPlaylist(token, playlist);
+        ListOfPlaylists actual = sut.addPlaylist(userid, playlist);
 
         // Arrange
         assertEquals(expected, actual);
@@ -80,10 +80,10 @@ public class PlaylistsServiceTest extends TestCase {
         String playlistId = "1";
         Playlist playlist = new Playlist();
         ListOfPlaylists expected = new ListOfPlaylists();
-        when(mockPlaylistsDao.editPlaylist(token, playlistId, playlist)).thenReturn(expected);
+        when(mockPlaylistsDao.editPlaylist(userid, playlistId, playlist)).thenReturn(expected);
 
         // Act
-        ListOfPlaylists result = sut.editPlaylist(token, playlistId, playlist);
+        ListOfPlaylists result = sut.editPlaylist(userid, playlistId, playlist);
 
         // Assert
         assertEquals(expected, result);

@@ -16,11 +16,13 @@ public class PlaylistsResourceTest extends TestCase {
     private PlaylistsService mockPlaylistsService;
     private TracksService mockTracksService;
     private String token;
+    private int userid;
 
     public void setUp() {
         mockPlaylistsService = mock(PlaylistsService.class);
         mockTracksService = mock(TracksService.class);
         token = "1234-1234-1234";
+        userid = 1;
         sut = new PlaylistsResource();
         sut.setPlaylistsService(mockPlaylistsService);
         sut.setTracksService(mockTracksService);
@@ -29,7 +31,7 @@ public class PlaylistsResourceTest extends TestCase {
     public void testGetPlaylists() {
         // Arrange
         ListOfPlaylists expected = new ListOfPlaylists();
-        when(mockPlaylistsService.getAllPlaylists(token)).thenReturn(expected);
+        when(mockPlaylistsService.getAllPlaylists(userid)).thenReturn(expected);
 
         // Act
         Response response = sut.getPlaylists(token);
@@ -44,7 +46,7 @@ public class PlaylistsResourceTest extends TestCase {
         Playlist playlist = new Playlist();
         String playlistId = "1";
         ListOfPlaylists expected = new ListOfPlaylists();
-        when(mockPlaylistsService.deletePlaylist(token, playlistId)).thenReturn(expected);
+        when(mockPlaylistsService.deletePlaylist(userid, playlistId)).thenReturn(expected);
 
         // Act
         Response response = sut.deletePlaylist(token, playlistId);
@@ -58,7 +60,7 @@ public class PlaylistsResourceTest extends TestCase {
         // Arrange
         Playlist playlist = new Playlist();
         ListOfPlaylists expected = new ListOfPlaylists();
-        when(mockPlaylistsService.addPlaylist(token, playlist)).thenReturn(expected);
+        when(mockPlaylistsService.addPlaylist(userid, playlist)).thenReturn(expected);
 
         // Act
         Response response = sut.addPlaylist(token, playlist);
@@ -73,7 +75,7 @@ public class PlaylistsResourceTest extends TestCase {
         String playlistId = "1";
         Playlist playlist = new Playlist();
         ListOfPlaylists expected = new ListOfPlaylists();
-        when(mockPlaylistsService.editPlaylist(token, playlistId, playlist)).thenReturn(expected);
+        when(mockPlaylistsService.editPlaylist(userid, playlistId, playlist)).thenReturn(expected);
 
         // Act
         Response response = sut.editPlaylist(token, playlistId, playlist);

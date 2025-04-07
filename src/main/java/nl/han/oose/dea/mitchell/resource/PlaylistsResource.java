@@ -18,7 +18,7 @@ public class PlaylistsResource extends Resource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPlaylists(@QueryParam("token") String token) {
         validateUserLogin(token);
-        return Response.ok().entity(playlistsService.getAllPlaylists(token)).build();
+        return Response.ok().entity(playlistsService.getAllPlaylists(this.userid)).build();
     }
 
     @DELETE
@@ -26,7 +26,7 @@ public class PlaylistsResource extends Resource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deletePlaylist(@QueryParam("token") String token, @PathParam("id") String id) {
         validateUserLogin(token);
-        return Response.ok().entity(playlistsService.deletePlaylist(token, id)).build();
+        return Response.ok().entity(playlistsService.deletePlaylist(this.userid, id)).build();
     }
 
     @POST
@@ -34,7 +34,7 @@ public class PlaylistsResource extends Resource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addPlaylist(@QueryParam("token") String token, Playlist playlist) {
         validateUserLogin(token);
-        return Response.ok().entity(playlistsService.addPlaylist(token, playlist)).build();
+        return Response.ok().entity(playlistsService.addPlaylist(this.userid, playlist)).build();
     }
 
     @PUT
@@ -43,7 +43,7 @@ public class PlaylistsResource extends Resource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response editPlaylist(@QueryParam("token") String token, @PathParam("id") String id, Playlist playlist) {
         validateUserLogin(token);
-        return Response.ok().entity(playlistsService.editPlaylist(token, id, playlist)).build();
+        return Response.ok().entity(playlistsService.editPlaylist(this.userid, id, playlist)).build();
     }
 
     @GET

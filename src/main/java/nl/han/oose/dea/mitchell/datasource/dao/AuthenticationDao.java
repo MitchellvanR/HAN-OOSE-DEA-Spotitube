@@ -17,4 +17,18 @@ public class AuthenticationDao extends Dao {
             disconnect();
         }
     }
+
+    public int getUserIdFromToken(String token) {
+        try (ResultSet resultSet = prepareStatement(String.format(SQLString.GET_USER_ID_FROM_TOKEN.label, token)).executeQuery()) {
+            if (resultSet.next()) {
+                return resultSet.getInt("id");
+            } else {
+                throw new SQLQueryException();
+            }
+        } catch (SQLException e) {
+            throw new SQLQueryException();
+        } finally {
+            disconnect();
+        }
+    }
 }

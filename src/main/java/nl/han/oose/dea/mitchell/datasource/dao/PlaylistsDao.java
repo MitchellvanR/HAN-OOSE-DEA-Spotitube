@@ -17,15 +17,15 @@ public class PlaylistsDao extends Dao {
     private TracksDao tracksDao;
     private PlaylistMapper playlistMapper;
 
-    public ListOfPlaylists getAllPlaylists(String token) {
+    public ListOfPlaylists getAllPlaylists(int userid) {
         ListOfTracks tracks = tracksDao.getAllTracksInPlaylists();
-        return playlistGetRequest(SQLString.GET_ALL_PLAYLISTS.label, token, tracks);
+        return playlistGetRequest(SQLString.GET_ALL_PLAYLISTS.label, userid, tracks);
     }
 
-    public ListOfPlaylists deletePlaylist(String token, String id) {
+    public ListOfPlaylists deletePlaylist(int userid, String id) {
         try {
-            prepareStatement(String.format(SQLString.DELETE_PLAYLIST.label, id, token)).execute();
-            return getAllPlaylists(token);
+            prepareStatement(String.format(SQLString.DELETE_PLAYLIST.label, id, userid)).execute();
+            return getAllPlaylists(userid);
         } catch (SQLException e) {
             throw new SQLQueryException();
         } finally {
@@ -33,10 +33,10 @@ public class PlaylistsDao extends Dao {
         }
     }
 
-    public ListOfPlaylists addPlaylist(String token, String owner, String playlistName) {
+    public ListOfPlaylists addPlaylist(int userid, String playlistName) {
         try {
-            prepareStatement(String.format(SQLString.ADD_PLAYLIST.label, playlistName, owner)).execute();
-            return getAllPlaylists(token);
+            prepareStatement(String.format(SQLString.ADD_PLAYLIST.label, playlistName, userid)).execute();
+            return getAllPlaylists(userid);
         } catch (SQLException e) {
             throw new SQLQueryException();
         } finally {
@@ -44,10 +44,10 @@ public class PlaylistsDao extends Dao {
         }
     }
 
-    public ListOfPlaylists editPlaylist(String token, String id, Playlist playlist) {
+    public ListOfPlaylists editPlaylist(int userid, String id, Playlist playlist) {
         try {
-            prepareStatement(String.format(SQLString.UPDATE_PLAYLIST.label, playlist.getName(), id, token)).execute();
-            return getAllPlaylists(token);
+            prepareStatement(String.format(SQLString.UPDATE_PLAYLIST.label, playlist.getName(), id, userid)).execute();
+            return getAllPlaylists(userid);
         } catch (SQLException e) {
             throw new SQLQueryException();
         } finally {
@@ -55,9 +55,9 @@ public class PlaylistsDao extends Dao {
         }
     }
 
-    private ListOfPlaylists playlistGetRequest(String sqlString, String token, ListOfTracks tracks) {
+    private ListOfPlaylists playlistGetRequest(String sqlString, int userid, ListOfTracks tracks) {
         try (ResultSet resultSet = prepareStatement(sqlString).executeQuery()) {
-            return playlistMapper.mapPlaylistsFromResultSet(resultSet, token, tracks);
+            return playlistMapper.mapPlaylistsFromResultSet(resultSet, userid, tracks);
         } catch (SQLException e) {
             throw new SQLQueryException();
         } finally {

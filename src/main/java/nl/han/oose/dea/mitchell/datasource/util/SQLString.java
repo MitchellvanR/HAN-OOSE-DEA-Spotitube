@@ -4,6 +4,7 @@ public enum SQLString {
     GET_CREDENTIALS("SELECT * FROM users WHERE username='%s' AND password='%s'"),
     REGISTER_USER("UPDATE logged_in_users SET token = '%s' WHERE username='%s'"),
     AUTHENTICATE_USER("SELECT 1 FROM logged_in_users WHERE token = '%s'"),
+    GET_USER_ID_FROM_TOKEN("SELECT users.id FROM users JOIN logged_in_users ON users.username = logged_in_users.username WHERE logged_in_users.token='%s'"),
     GET_ALL_PLAYLISTS("SELECT * FROM playlist"),
     DELETE_PLAYLIST("DELETE FROM playlist WHERE id='%s' AND owner='%s'"),
     ADD_PLAYLIST("INSERT INTO playlist VALUES ('%s', '%s')"),

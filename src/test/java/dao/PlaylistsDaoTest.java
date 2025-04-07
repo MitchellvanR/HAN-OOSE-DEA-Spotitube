@@ -7,12 +7,10 @@ import nl.han.oose.dea.mitchell.domain.dto.playlists.ListOfPlaylists;
 import nl.han.oose.dea.mitchell.domain.dto.playlists.Playlist;
 import junit.framework.TestCase;
 import nl.han.oose.dea.mitchell.domain.dto.tracks.ListOfTracks;
-import nl.han.oose.dea.mitchell.domain.dto.tracks.Track;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.*;
@@ -22,7 +20,7 @@ public class PlaylistsDaoTest extends TestCase {
     private PlaylistMapper mockPlaylistMapper;
     private PreparedStatement mockPreparedStatement;
     private ResultSet mockResultSet;
-    private String token;
+    private int userid;
 
     public void setUp() {
         mockPlaylistMapper = mock(PlaylistMapper.class);
@@ -30,7 +28,7 @@ public class PlaylistsDaoTest extends TestCase {
         mockResultSet = mock(ResultSet.class);
         sut = spy(new PlaylistsDao());
         sut.setPlaylistMapper(mockPlaylistMapper);
-        token = "1234-1234-1234";
+        userid = 1;
     }
 
     public void testGetAllPlaylistsSuccess() throws Exception {
@@ -39,10 +37,10 @@ public class PlaylistsDaoTest extends TestCase {
         ListOfTracks tracks = new ListOfTracks();
         doReturn(mockPreparedStatement).when(sut).prepareStatement(anyString());
         when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
-        when(mockPlaylistMapper.mapPlaylistsFromResultSet(mockResultSet, token, tracks)).thenReturn(expected);
+        when(mockPlaylistMapper.mapPlaylistsFromResultSet(mockResultSet, userid, tracks)).thenReturn(expected);
 
         // Act
-        ListOfPlaylists actual = sut.getAllPlaylists(token);
+        ListOfPlaylists actual = sut.getAllPlaylists(userid);
 
         // Assert
         assertEquals(expected, actual);
@@ -55,10 +53,10 @@ public class PlaylistsDaoTest extends TestCase {
         ListOfPlaylists expected = new ListOfPlaylists();
         doReturn(mockPreparedStatement).when(sut).prepareStatement(anyString());
         when(mockPreparedStatement.execute()).thenReturn(true);
-        doReturn(expected).when(sut).getAllPlaylists(token);
+        doReturn(expected).when(sut).getAllPlaylists(userid);
 
         // Act
-        ListOfPlaylists actual = sut.deletePlaylist(token, playlistId);
+        ListOfPlaylists actual = sut.deletePlaylist(userid, playlistId);
 
         // Assert
         assertEquals(expected, actual);
@@ -67,15 +65,14 @@ public class PlaylistsDaoTest extends TestCase {
 
     public void testAddPlaylistSuccess() throws Exception {
         // Arrange
-        String owner = "1234-1234-1234";
         String playlistName = "New Playlist";
         ListOfPlaylists expected = new ListOfPlaylists();
         doReturn(mockPreparedStatement).when(sut).prepareStatement(anyString());
         when(mockPreparedStatement.execute()).thenReturn(true);
-        when(sut.getAllPlaylists(token)).thenReturn(expected);
+        when(sut.getAllPlaylists(userid)).thenReturn(expected);
 
         // Act
-        ListOfPlaylists actual = sut.addPlaylist(token, owner, playlistName);
+        ListOfPlaylists actual = sut.addPlaylist(userid, playlistName);
 
         // Assert
         assertEquals(expected, actual);
@@ -90,10 +87,10 @@ public class PlaylistsDaoTest extends TestCase {
         ListOfPlaylists expected = new ListOfPlaylists();
         doReturn(mockPreparedStatement).when(sut).prepareStatement(anyString());
         when(mockPreparedStatement.execute()).thenReturn(true);
-        when(sut.getAllPlaylists(token)).thenReturn(expected);
+        when(sut.getAllPlaylists(userid)).thenReturn(expected);
 
         // Act
-        ListOfPlaylists actual = sut.editPlaylist(token, playlistId, playlist);
+        ListOfPlaylists actual = sut.editPlaylist(userid, playlistId, playlist);
 
         // Assert
         assertEquals(expected, actual);
@@ -106,7 +103,7 @@ public class PlaylistsDaoTest extends TestCase {
         when(mockPreparedStatement.executeQuery()).thenThrow(new SQLException());
 
         // Act & Assert
-        assertThrows(SQLQueryException.class, () -> sut.getAllPlaylists(token));
+        assertThrows(SQLQueryException.class, () -> sut.getAllPlaylists(userid));
 
         verify(sut, times(1)).disconnect();
     }

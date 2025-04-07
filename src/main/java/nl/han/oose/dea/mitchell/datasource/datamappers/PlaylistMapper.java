@@ -9,14 +9,14 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class PlaylistMapper {
-    public ListOfPlaylists mapPlaylistsFromResultSet(ResultSet resultSet, String token, ListOfTracks tracks) throws SQLException {
+    public ListOfPlaylists mapPlaylistsFromResultSet(ResultSet resultSet, int userid, ListOfTracks tracks) throws SQLException {
         ListOfPlaylists listOfPlaylists = new ListOfPlaylists();
         ArrayList<Playlist> playlists = new ArrayList<>();
         while (resultSet.next()) {
             playlists.add(new Playlist(
                 resultSet.getInt("id"),
                 resultSet.getString("name"),
-                evaluatePlaylistOwnership(resultSet.getString("owner"), token),
+                evaluatePlaylistOwnership(resultSet.getInt("owner"), userid),
                 new ArrayList<>()
             ));
         }
@@ -25,7 +25,7 @@ public class PlaylistMapper {
         return listOfPlaylists;
     }
 
-    private boolean evaluatePlaylistOwnership(String owner, String token) {
-        return owner.equals(token);
+    private boolean evaluatePlaylistOwnership(int owner, int userid) {
+        return owner == userid;
     }
 }

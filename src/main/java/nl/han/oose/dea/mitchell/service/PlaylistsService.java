@@ -8,20 +8,20 @@ import jakarta.inject.Inject;
 public class PlaylistsService {
     private PlaylistsDao playlistsDao;
 
-    public ListOfPlaylists getAllPlaylists(String token) {
-        return playlistsDao.getAllPlaylists(token);
+    public ListOfPlaylists getAllPlaylists(int userid) {
+        return playlistsDao.getAllPlaylists(userid);
     }
 
-    public ListOfPlaylists deletePlaylist(String token, String id) {
-        return playlistsDao.deletePlaylist(token, id);
+    public ListOfPlaylists deletePlaylist(int userid, String id) {
+        return playlistsDao.deletePlaylist(userid, id);
     }
 
-    public ListOfPlaylists addPlaylist(String token, Playlist playlist) {
-        return playlistsDao.addPlaylist(token, token, playlist.getName());
+    public ListOfPlaylists addPlaylist(int userid, Playlist playlist) {
+        return playlistsDao.addPlaylist(userid, playlist.getName());
     }
 
-    public ListOfPlaylists editPlaylist(String token, String id, Playlist playlist) {
-        return playlistsDao.editPlaylist(token, id, playlist);
+    public ListOfPlaylists editPlaylist(int userid, String id, Playlist playlist) {
+        return playlistsDao.editPlaylist(userid, id, playlist);
     }
 
     @Inject
