@@ -7,8 +7,7 @@ import junit.framework.TestCase;
 import nl.han.oose.dea.mitchell.service.exceptions.InvalidCredentialsException;
 
 import static org.junit.Assert.assertThrows;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class LoginServiceTest extends TestCase {
     private LoginService sut;
@@ -16,14 +15,15 @@ public class LoginServiceTest extends TestCase {
 
     public void setUp() {
         mockLoginDao = mock(LoginDao.class);
-        sut = new LoginService();
+        sut = spy(new LoginService());
         sut.setLoginDao(mockLoginDao);
     }
 
     public void testSuccessfulLogin() {
         // Arrange
         Credentials credentials = new Credentials("username", "password");
-        User user = new User("username", "1234-1234-1234");
+        User user = new User("1234-1234-1234", "username");
+        doReturn("1234-1234-1234").when(sut).generateToken();
         when(mockLoginDao.getCredentials(credentials)).thenReturn(credentials);
 
         // Act

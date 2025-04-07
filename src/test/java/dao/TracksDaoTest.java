@@ -66,6 +66,7 @@ public class TracksDaoTest extends TestCase {
         track.setId(1);
         ListOfTracks expected = new ListOfTracks();
         doReturn(mockPreparedStatement).when(sut).prepareStatement(anyString());
+        doReturn(false).when(sut).checkIfTrackIsAlreadyInPlaylist(playlistId, track.getId());
         when(mockPreparedStatement.execute()).thenReturn(true);
         doReturn(expected).when(sut).getTracksFromPlaylist(playlistId);
 

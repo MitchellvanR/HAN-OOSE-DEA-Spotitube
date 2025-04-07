@@ -1,6 +1,7 @@
 package dao;
 
 import nl.han.oose.dea.mitchell.datasource.dao.PlaylistsDao;
+import nl.han.oose.dea.mitchell.datasource.dao.TracksDao;
 import nl.han.oose.dea.mitchell.datasource.datamappers.PlaylistMapper;
 import nl.han.oose.dea.mitchell.datasource.exceptions.SQLQueryException;
 import nl.han.oose.dea.mitchell.domain.dto.playlists.ListOfPlaylists;
@@ -18,26 +19,31 @@ import static org.mockito.Mockito.*;
 public class PlaylistsDaoTest extends TestCase {
     private PlaylistsDao sut;
     private PlaylistMapper mockPlaylistMapper;
+    private TracksDao mockTracksDao;
+    private ListOfTracks mockListOfTracks;
     private PreparedStatement mockPreparedStatement;
     private ResultSet mockResultSet;
     private int userid;
 
     public void setUp() {
         mockPlaylistMapper = mock(PlaylistMapper.class);
+        mockTracksDao = mock(TracksDao.class);
+        mockListOfTracks = mock(ListOfTracks.class);
         mockPreparedStatement = mock(PreparedStatement.class);
         mockResultSet = mock(ResultSet.class);
         sut = spy(new PlaylistsDao());
         sut.setPlaylistMapper(mockPlaylistMapper);
+        sut.setTracksDao(mockTracksDao);
         userid = 1;
     }
 
     public void testGetAllPlaylistsSuccess() throws Exception {
         // Arrange
         ListOfPlaylists expected = new ListOfPlaylists();
-        ListOfTracks tracks = new ListOfTracks();
         doReturn(mockPreparedStatement).when(sut).prepareStatement(anyString());
+        doReturn(mockListOfTracks).when(mockTracksDao).getAllTracksInPlaylists();
         when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
-        when(mockPlaylistMapper.mapPlaylistsFromResultSet(mockResultSet, userid, tracks)).thenReturn(expected);
+        when(mockPlaylistMapper.mapPlaylistsFromResultSet(mockResultSet, userid, mockListOfTracks)).thenReturn(expected);
 
         // Act
         ListOfPlaylists actual = sut.getAllPlaylists(userid);
@@ -100,6 +106,7 @@ public class PlaylistsDaoTest extends TestCase {
     public void testPlaylistGetRequestThrowsSQLQueryException() throws Exception {
         // Arrange
         doReturn(mockPreparedStatement).when(sut).prepareStatement(anyString());
+        doReturn(mockListOfTracks).when(mockTracksDao).getAllTracksInPlaylists();
         when(mockPreparedStatement.executeQuery()).thenThrow(new SQLException());
 
         // Act & Assert
