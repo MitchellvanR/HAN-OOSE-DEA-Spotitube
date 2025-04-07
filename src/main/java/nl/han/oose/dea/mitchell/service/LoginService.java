@@ -22,7 +22,7 @@ public class LoginService {
         }
     }
 
-    public String generateToken() {
+    protected String generateToken() {
         Random random = new Random();
         return String.format("%d-%d-%d",
                 random.nextInt(1000,10000),
