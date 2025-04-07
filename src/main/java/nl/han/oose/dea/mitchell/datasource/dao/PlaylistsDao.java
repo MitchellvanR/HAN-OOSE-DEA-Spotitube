@@ -33,6 +33,26 @@ public class PlaylistsDao extends Dao {
         }
     }
 
+    public boolean playlistHasTracks(String id) {
+        try (ResultSet resultSet = prepareStatement(String.format(SQLString.CHECK_IF_PLAYLIST_HAS_TRACKS.label, id)).executeQuery()) {
+            return resultSet.next();
+        } catch (SQLException e) {
+            throw new SQLQueryException();
+        } finally {
+            disconnect();
+        }
+    }
+
+    public void emptyPlaylist(String id) {
+        try {
+            prepareStatement(String.format(SQLString.EMPTY_PLAYLIST.label, id)).execute();
+        } catch (SQLException e) {
+            throw new SQLQueryException();
+        } finally {
+            disconnect();
+        }
+    }
+
     public ListOfPlaylists addPlaylist(int userid, String playlistName) {
         try {
             prepareStatement(String.format(SQLString.ADD_PLAYLIST.label, playlistName, userid)).execute();

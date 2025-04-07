@@ -13,6 +13,9 @@ public class PlaylistsService {
     }
 
     public ListOfPlaylists deletePlaylist(int userid, String id) {
+        if (playlistsDao.playlistHasTracks(id)) {
+            playlistsDao.emptyPlaylist(id);
+        }
         return playlistsDao.deletePlaylist(userid, id);
     }
 

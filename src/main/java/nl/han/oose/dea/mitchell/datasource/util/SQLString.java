@@ -7,6 +7,8 @@ public enum SQLString {
     GET_USER_ID_FROM_TOKEN("SELECT users.id FROM users JOIN logged_in_users ON users.username = logged_in_users.username WHERE logged_in_users.token='%s'"),
     GET_ALL_PLAYLISTS("SELECT * FROM playlist"),
     DELETE_PLAYLIST("DELETE FROM playlist WHERE id='%s' AND owner='%s'"),
+    CHECK_IF_PLAYLIST_HAS_TRACKS("SELECT 1 FROM track_in_playlist WHERE playlistId='%s'"),
+    EMPTY_PLAYLIST("DELETE FROM track_in_playlist WHERE playlistId='%s'"),
     ADD_PLAYLIST("INSERT INTO playlist VALUES ('%s', '%s')"),
     UPDATE_PLAYLIST("UPDATE playlist SET name = '%s' WHERE id='%s' AND owner='%s'"),
     GET_TRACKS_FROM_PLAYLIST("SELECT * FROM track JOIN track_in_playlist ON track.id = track_in_playlist.trackId WHERE track_in_playlist.playlistId = '%s'"),
