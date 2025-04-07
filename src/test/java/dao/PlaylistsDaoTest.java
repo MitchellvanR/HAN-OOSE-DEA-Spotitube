@@ -1,10 +1,10 @@
 package dao;
 
-import datasource.dao.PlaylistsDao;
-import datasource.datamappers.PlaylistMapper;
-import datasource.exceptions.SQLQueryException;
-import domain.dto.playlists.ListOfPlaylists;
-import domain.dto.playlists.Playlist;
+import nl.han.oose.dea.mitchell.datasource.dao.PlaylistsDao;
+import nl.han.oose.dea.mitchell.datasource.datamappers.PlaylistMapper;
+import nl.han.oose.dea.mitchell.datasource.exceptions.SQLQueryException;
+import nl.han.oose.dea.mitchell.domain.dto.playlists.ListOfPlaylists;
+import nl.han.oose.dea.mitchell.domain.dto.playlists.Playlist;
 import junit.framework.TestCase;
 
 import java.sql.PreparedStatement;

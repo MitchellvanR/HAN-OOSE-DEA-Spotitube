@@ -1,10 +1,10 @@
 package dao;
 
-import datasource.dao.TracksDao;
-import datasource.datamappers.TrackMapper;
-import datasource.exceptions.SQLQueryException;
-import domain.dto.tracks.ListOfTracks;
-import domain.dto.tracks.Track;
+import nl.han.oose.dea.mitchell.datasource.dao.TracksDao;
+import nl.han.oose.dea.mitchell.datasource.datamappers.TrackMapper;
+import nl.han.oose.dea.mitchell.datasource.exceptions.SQLQueryException;
+import nl.han.oose.dea.mitchell.domain.dto.tracks.ListOfTracks;
+import nl.han.oose.dea.mitchell.domain.dto.tracks.Track;
 import junit.framework.TestCase;
 
 import java.sql.PreparedStatement;

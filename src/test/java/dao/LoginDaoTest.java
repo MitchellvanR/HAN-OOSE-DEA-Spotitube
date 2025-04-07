@@ -1,9 +1,9 @@
 package dao;
 
-import datasource.dao.LoginDao;
-import datasource.datamappers.CredentialsMapper;
-import datasource.exceptions.SQLQueryException;
-import domain.dto.login.Credentials;
+import nl.han.oose.dea.mitchell.datasource.dao.LoginDao;
+import nl.han.oose.dea.mitchell.datasource.datamappers.CredentialsMapper;
+import nl.han.oose.dea.mitchell.datasource.exceptions.SQLQueryException;
+import nl.han.oose.dea.mitchell.domain.dto.login.Credentials;
 import junit.framework.TestCase;
 
 import java.sql.PreparedStatement;
