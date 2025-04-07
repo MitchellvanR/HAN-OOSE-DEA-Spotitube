@@ -1,10 +1,12 @@
 package nl.han.oose.dea.mitchell.resource.exceptions.mappers.data;
 
+import jakarta.ws.rs.ext.Provider;
 import nl.han.oose.dea.mitchell.datasource.exceptions.SQLDisconnectException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import nl.han.oose.dea.mitchell.resource.exceptions.ErrorMessage;
 
+@Provider
 public class SQLDisconnectExceptionMapper implements ExceptionMapper<SQLDisconnectException> {
     @Override
     public Response toResponse(SQLDisconnectException e) {

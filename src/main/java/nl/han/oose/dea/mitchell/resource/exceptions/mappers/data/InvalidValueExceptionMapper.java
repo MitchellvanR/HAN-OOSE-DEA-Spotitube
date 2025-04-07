@@ -1,10 +1,12 @@
 package nl.han.oose.dea.mitchell.resource.exceptions.mappers.data;
 
+import jakarta.ws.rs.ext.Provider;
 import nl.han.oose.dea.mitchell.datasource.exceptions.InvalidValueException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import nl.han.oose.dea.mitchell.resource.exceptions.ErrorMessage;
 
+@Provider
 public class InvalidValueExceptionMapper implements ExceptionMapper<InvalidValueException> {
     @Override
     public Response toResponse(InvalidValueException e) {
