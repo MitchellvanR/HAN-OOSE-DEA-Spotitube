@@ -6,10 +6,13 @@ import nl.han.oose.dea.mitchell.datasource.exceptions.SQLQueryException;
 import nl.han.oose.dea.mitchell.domain.dto.playlists.ListOfPlaylists;
 import nl.han.oose.dea.mitchell.domain.dto.playlists.Playlist;
 import junit.framework.TestCase;
+import nl.han.oose.dea.mitchell.domain.dto.tracks.ListOfTracks;
+import nl.han.oose.dea.mitchell.domain.dto.tracks.Track;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.*;
@@ -33,9 +36,10 @@ public class PlaylistsDaoTest extends TestCase {
     public void testGetAllPlaylistsSuccess() throws Exception {
         // Arrange
         ListOfPlaylists expected = new ListOfPlaylists();
+        ListOfTracks tracks = new ListOfTracks();
         doReturn(mockPreparedStatement).when(sut).prepareStatement(anyString());
         when(mockPreparedStatement.executeQuery()).thenReturn(mockResultSet);
-        when(mockPlaylistMapper.mapPlaylistsFromResultSet(mockResultSet, token)).thenReturn(expected);
+        when(mockPlaylistMapper.mapPlaylistsFromResultSet(mockResultSet, token, tracks)).thenReturn(expected);
 
         // Act
         ListOfPlaylists actual = sut.getAllPlaylists(token);

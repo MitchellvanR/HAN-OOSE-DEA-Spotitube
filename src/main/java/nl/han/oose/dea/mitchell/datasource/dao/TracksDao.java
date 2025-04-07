@@ -21,6 +21,8 @@ public class TracksDao extends Dao {
         return trackGetRequest(SQLString.GET_ALL_TRACKS.label);
     }
 
+    public ListOfTracks getAllTracksInPlaylists() { return trackGetRequest(SQLString.GET_ALL_TRACKS_IN_PLAYLISTS.label); }
+
     public ListOfTracks addTrackToPlaylist(String id, Track track) {
         try {
             prepareStatement(String.format(SQLString.ADD_TRACK_TO_PLAYLIST.label, Integer.parseInt(id), track.getId())).execute();

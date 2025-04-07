@@ -1,5 +1,6 @@
 package nl.han.oose.dea.mitchell.domain.dto.playlists;
 
+import nl.han.oose.dea.mitchell.domain.dto.tracks.ListOfTracks;
 import nl.han.oose.dea.mitchell.domain.dto.tracks.Track;
 
 import java.util.ArrayList;
@@ -9,23 +10,21 @@ public class ListOfPlaylists {
     private int length;
 
     public ListOfPlaylists() {
-        length = calculateTotalLength();
+        length = 0;
     }
 
     public ListOfPlaylists(ArrayList<Playlist> playlists) {
         this.playlists = playlists;
-        length = calculateTotalLength();
+        length = 0;
     }
 
-    private int calculateTotalLength() {
-        if (playlists == null || playlists.isEmpty()) return 0;
+    public void calculateTotalLength(ListOfTracks tracks) {
+        if (playlists == null || playlists.isEmpty()) length = 0;
         int totalLength = 0;
-        for (Playlist playlist : playlists) {
-            for (Track track : playlist.getTracks()) {
-                totalLength += track.getDuration();
-            }
+        for (Track track : tracks.getTracks()) {
+            totalLength += track.getDuration();
         }
-        return totalLength;
+        length = totalLength;
     }
 
     public ArrayList<Playlist> getPlaylists() {
@@ -34,7 +33,6 @@ public class ListOfPlaylists {
 
     public void setPlaylists(ArrayList<Playlist> playlists) {
         this.playlists = playlists;
-        length = calculateTotalLength();
     }
 
     public int getLength() {

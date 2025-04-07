@@ -10,6 +10,7 @@ public enum SQLString {
     UPDATE_PLAYLIST("UPDATE playlist SET name = '%s' WHERE id='%s' AND owner='%s'"),
     GET_TRACKS_FROM_PLAYLIST("SELECT * FROM track JOIN track_in_playlist ON track.id = track_in_playlist.trackId WHERE track_in_playlist.playlistId = %s"),
     GET_ALL_TRACKS("SELECT * FROM track"),
+    GET_ALL_TRACKS_IN_PLAYLISTS("SELECT track.* FROM track JOIN track_in_playlist ON track.id = track_in_playlist.trackId"),
     ADD_TRACK_TO_PLAYLIST("INSERT INTO track_in_playlist VALUES ('%s', '%s')"),
     DELETE_TRACK_FROM_PLAYLIST("DELETE FROM track_in_playlist WHERE playlistId='%s' AND trackId='%s'");
 

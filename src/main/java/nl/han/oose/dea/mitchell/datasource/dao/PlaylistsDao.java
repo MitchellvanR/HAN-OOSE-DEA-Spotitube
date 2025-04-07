@@ -6,15 +6,20 @@ import nl.han.oose.dea.mitchell.datasource.util.SQLString;
 import nl.han.oose.dea.mitchell.domain.dto.playlists.ListOfPlaylists;
 import nl.han.oose.dea.mitchell.domain.dto.playlists.Playlist;
 import jakarta.inject.Inject;
+import nl.han.oose.dea.mitchell.domain.dto.tracks.ListOfTracks;
+import nl.han.oose.dea.mitchell.domain.dto.tracks.Track;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class PlaylistsDao extends Dao {
+    private TracksDao tracksDao;
     private PlaylistMapper playlistMapper;
 
     public ListOfPlaylists getAllPlaylists(String token) {
-        return playlistGetRequest(SQLString.GET_ALL_PLAYLISTS.label, token);
+        ListOfTracks tracks = tracksDao.getAllTracksInPlaylists();
+        return playlistGetRequest(SQLString.GET_ALL_PLAYLISTS.label, token, tracks);
     }
 
     public ListOfPlaylists deletePlaylist(String token, String id) {
@@ -50,15 +55,18 @@ public class PlaylistsDao extends Dao {
         }
     }
 
-    private ListOfPlaylists playlistGetRequest(String sqlString, String token) {
+    private ListOfPlaylists playlistGetRequest(String sqlString, String token, ListOfTracks tracks) {
         try (ResultSet resultSet = prepareStatement(sqlString).executeQuery()) {
-            return playlistMapper.mapPlaylistsFromResultSet(resultSet, token);
+            return playlistMapper.mapPlaylistsFromResultSet(resultSet, token, tracks);
         } catch (SQLException e) {
             throw new SQLQueryException();
         } finally {
             disconnect();
         }
     }
+
+    @Inject
+    public void setTracksDao(TracksDao tracksDao) { this.tracksDao = tracksDao; }
 
     @Inject
     public void setPlaylistMapper(PlaylistMapper playlistMapper) {
