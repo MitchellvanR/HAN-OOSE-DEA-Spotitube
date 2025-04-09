@@ -44,7 +44,7 @@ public class TracksDaoTest extends TestCase {
         verify(sut, times(1)).disconnect();
     }
 
-    public void testGetAllTracksSuccess() throws Exception {
+    public void testGetAllAvailableTracksSuccess() throws Exception {
         // Arrange
         ListOfTracks expected = new ListOfTracks();
         doReturn(mockPreparedStatement).when(sut).prepareStatement(anyString());
@@ -52,7 +52,7 @@ public class TracksDaoTest extends TestCase {
         when(mockTrackMapper.mapTracksFromResultSet(mockResultSet)).thenReturn(expected);
 
         // Act
-        ListOfTracks actual = sut.getAllTracks();
+        ListOfTracks actual = sut.getAllAvailableTracks(1);
 
         // Assert
         assertEquals(expected, actual);
@@ -66,7 +66,6 @@ public class TracksDaoTest extends TestCase {
         track.setId(1);
         ListOfTracks expected = new ListOfTracks();
         doReturn(mockPreparedStatement).when(sut).prepareStatement(anyString());
-        doReturn(false).when(sut).checkIfTrackIsAlreadyInPlaylist(playlistId, track.getId());
         when(mockPreparedStatement.execute()).thenReturn(true);
         doReturn(expected).when(sut).getTracksFromPlaylist(playlistId);
 
@@ -101,7 +100,7 @@ public class TracksDaoTest extends TestCase {
         when(mockPreparedStatement.executeQuery()).thenThrow(new SQLException());
 
         // Act & Assert
-        assertThrows(SQLQueryException.class, () -> sut.getAllTracks());
+        assertThrows(SQLQueryException.class, () -> sut.getAllAvailableTracks(1));
 
         verify(sut, times(1)).disconnect();
     }

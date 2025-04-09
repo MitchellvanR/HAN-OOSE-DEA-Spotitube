@@ -5,6 +5,7 @@ import nl.han.oose.dea.mitchell.domain.dto.tracks.ListOfTracks;
 import nl.han.oose.dea.mitchell.domain.dto.tracks.Track;
 import junit.framework.TestCase;
 
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -34,10 +35,10 @@ public class TracksServiceTest extends TestCase {
     public void testGetAllTracks() {
         // Arrange
         ListOfTracks expected = new ListOfTracks();
-        when(mockTracksDao.getAllTracks()).thenReturn(expected);
+        when(mockTracksDao.getAllAvailableTracks(anyInt())).thenReturn(expected);
 
         // Act
-        ListOfTracks actual = sut.getAllTracks();
+        ListOfTracks actual = sut.getAllAvailableTracks(1);
 
         // Assert
         assertEquals(expected, actual);

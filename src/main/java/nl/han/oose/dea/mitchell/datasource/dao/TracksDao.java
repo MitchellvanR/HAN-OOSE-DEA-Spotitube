@@ -1,7 +1,6 @@
 package nl.han.oose.dea.mitchell.datasource.dao;
 
 import nl.han.oose.dea.mitchell.datasource.datamappers.TrackMapper;
-import nl.han.oose.dea.mitchell.datasource.exceptions.DuplicateEntryException;
 import nl.han.oose.dea.mitchell.datasource.exceptions.SQLQueryException;
 import nl.han.oose.dea.mitchell.datasource.util.SQLString;
 import nl.han.oose.dea.mitchell.domain.dto.tracks.ListOfTracks;
@@ -18,25 +17,14 @@ public class TracksDao extends Dao {
         return trackGetRequest(String.format(SQLString.GET_TRACKS_FROM_PLAYLIST.label, id));
     }
 
-    public ListOfTracks getAllTracks() {
-        return trackGetRequest(SQLString.GET_ALL_TRACKS.label);
+    public ListOfTracks getAllAvailableTracks(int playlistId) {
+        return trackGetRequest(String.format(SQLString.GET_ALL_AVAILABLE_TRACKS_FROM_PLAYLIST.label, playlistId));
     }
 
     public ListOfTracks getAllTracksInPlaylists() { return trackGetRequest(SQLString.GET_ALL_TRACKS_IN_PLAYLISTS.label); }
 
-    public boolean checkIfTrackIsAlreadyInPlaylist(String playlistId, int trackId) {
-        try (ResultSet resultSet = prepareStatement(String.format(SQLString.CHECK_IF_TRACK_IN_PLAYLIST.label, playlistId, trackId)).executeQuery()) {
-            return resultSet.next();
-        } catch (SQLException e) {
-            throw new SQLQueryException();
-        } finally {
-            disconnect();
-        }
-    }
-
     public ListOfTracks addTrackToPlaylist(String id, Track track) {
         try {
-            if (checkIfTrackIsAlreadyInPlaylist(id, track.getId())) throw new DuplicateEntryException();
             prepareStatement(String.format(SQLString.ADD_TRACK_TO_PLAYLIST.label, Integer.parseInt(id), track.getId())).execute();
             return getTracksFromPlaylist(id);
         } catch (SQLException e) {

@@ -29,10 +29,10 @@ public class TracksResourceTest extends TestCase {
         ListOfTracks expected = new ListOfTracks();
         doReturn(true).when(mockAuthenticationService).validateToken(token);
         doReturn(1).when(mockAuthenticationService).getUserIdFromToken(token);
-        when(mockTracksService.getAllTracks()).thenReturn(expected);
+        when(mockTracksService.getAllAvailableTracks(anyInt())).thenReturn(expected);
 
         // Act
-        Response response = sut.getAllTracks(token);
+        Response response = sut.getAllAvailableTracks(1, token);
 
         // Assert
         assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());

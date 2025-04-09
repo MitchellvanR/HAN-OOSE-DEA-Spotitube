@@ -11,8 +11,8 @@ public class TracksService {
 
     public ListOfTracks getTracksFromPlaylist(String id) { return tracksDao.getTracksFromPlaylist(id); }
 
-    public ListOfTracks getAllTracks() {
-        return tracksDao.getAllTracks();
+    public ListOfTracks getAllAvailableTracks(int playlistId) {
+        return tracksDao.getAllAvailableTracks(playlistId);
     }
 
     public ListOfTracks addTrackToPlaylist(String id, Track track) {
