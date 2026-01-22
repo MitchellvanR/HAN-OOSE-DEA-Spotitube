@@ -1,28 +1,31 @@
 package nl.han.oose.dea.mitchell.datasource.dao;
 
+import jakarta.inject.Inject;
 import nl.han.oose.dea.mitchell.datasource.exceptions.SQLQueryException;
 import nl.han.oose.dea.mitchell.datasource.interfaces.IAuthenticationDao;
+import nl.han.oose.dea.mitchell.datasource.interfaces.IDatabaseConnector;
 import nl.han.oose.dea.mitchell.datasource.util.SQLString;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class JDBCAuthenticationDao extends Dao implements IAuthenticationDao {
+public class JDBCAuthenticationDao implements IAuthenticationDao {
+    private IDatabaseConnector databaseConnector;
 
     @Override
     public boolean validateToken(String token) {
-        try (ResultSet resultSet = prepareStatement(String.format(SQLString.AUTHENTICATE_USER.label, token)).executeQuery()) {
+        try (ResultSet resultSet = this.databaseConnector.prepareStatement(String.format(SQLString.AUTHENTICATE_USER.label, token)).executeQuery()) {
             return resultSet.next();
         } catch (SQLException e) {
             throw new SQLQueryException();
         } finally {
-            disconnect();
+            this.databaseConnector.disconnect();
         }
     }
 
     @Override
     public int getUserIdFromToken(String token) {
-        try (ResultSet resultSet = prepareStatement(String.format(SQLString.GET_USER_ID_FROM_TOKEN.label, token)).executeQuery()) {
+        try (ResultSet resultSet = this.databaseConnector.prepareStatement(String.format(SQLString.GET_USER_ID_FROM_TOKEN.label, token)).executeQuery()) {
             if (resultSet.next()) {
                 return resultSet.getInt("id");
             } else {
@@ -31,7 +34,12 @@ public class JDBCAuthenticationDao extends Dao implements IAuthenticationDao {
         } catch (SQLException e) {
             throw new SQLQueryException();
         } finally {
-            disconnect();
+            this.databaseConnector.disconnect();
         }
+    }
+
+    @Inject
+    public void setDatabaseConnector(IDatabaseConnector databaseConnector) {
+        this.databaseConnector = databaseConnector;
     }
 }

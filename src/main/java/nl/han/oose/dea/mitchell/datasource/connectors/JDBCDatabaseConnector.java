@@ -4,15 +4,17 @@ import nl.han.oose.dea.mitchell.datasource.exceptions.PropertyLoadException;
 import nl.han.oose.dea.mitchell.datasource.exceptions.SQLConnectionException;
 import nl.han.oose.dea.mitchell.datasource.exceptions.SQLDisconnectException;
 import io.github.cdimascio.dotenv.Dotenv;
+import nl.han.oose.dea.mitchell.datasource.interfaces.IDatabaseConnector;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class JDBCDatabaseConnector {
+public class JDBCDatabaseConnector implements IDatabaseConnector {
     private static volatile JDBCDatabaseConnector instance;
     private final Properties properties;
     private Connection connection;
@@ -57,6 +59,7 @@ public class JDBCDatabaseConnector {
         return DriverManager.getConnection(properties.getProperty("connectionString"));
     }
 
+    @Override
     public Connection getConnection() {
         if (connection == null) {
             try {
@@ -68,6 +71,12 @@ public class JDBCDatabaseConnector {
         return connection;
     }
 
+    @Override
+    public PreparedStatement prepareStatement(String sqlString) throws SQLException {
+        return JDBCDatabaseConnector.getInstance().getConnection().prepareStatement(sqlString);
+    }
+
+    @Override
     public void disconnect() {
         if (connection != null) {
             try {
