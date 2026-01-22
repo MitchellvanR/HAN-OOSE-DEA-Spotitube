@@ -1,9 +1,10 @@
-package nl.han.oose.dea.mitchell.service;
+package nl.han.oose.dea.mitchell.service.business;
 
 import nl.han.oose.dea.mitchell.datasource.interfaces.ITracksDao;
 import nl.han.oose.dea.mitchell.domain.dto.tracks.ListOfTracks;
 import nl.han.oose.dea.mitchell.domain.dto.tracks.Track;
 import junit.framework.TestCase;
+import nl.han.oose.dea.mitchell.service.business.TracksService;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.mock;

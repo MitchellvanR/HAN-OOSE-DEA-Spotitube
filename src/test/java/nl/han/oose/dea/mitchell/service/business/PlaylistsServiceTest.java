@@ -1,9 +1,10 @@
-package nl.han.oose.dea.mitchell.service;
+package nl.han.oose.dea.mitchell.service.business;
 
 import nl.han.oose.dea.mitchell.datasource.interfaces.IPlaylistsDao;
 import nl.han.oose.dea.mitchell.domain.dto.playlists.ListOfPlaylists;
 import nl.han.oose.dea.mitchell.domain.dto.playlists.Playlist;
 import junit.framework.TestCase;
+import nl.han.oose.dea.mitchell.service.business.PlaylistsService;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

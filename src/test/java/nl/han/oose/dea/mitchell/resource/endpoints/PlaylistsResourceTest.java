@@ -1,4 +1,4 @@
-package nl.han.oose.dea.mitchell.resource;
+package nl.han.oose.dea.mitchell.resource.endpoints;
 
 import nl.han.oose.dea.mitchell.domain.dto.playlists.ListOfPlaylists;
 import nl.han.oose.dea.mitchell.domain.dto.playlists.Playlist;
@@ -6,37 +6,39 @@ import nl.han.oose.dea.mitchell.domain.dto.tracks.ListOfTracks;
 import nl.han.oose.dea.mitchell.domain.dto.tracks.Track;
 import jakarta.ws.rs.core.Response;
 import junit.framework.TestCase;
-import nl.han.oose.dea.mitchell.service.AuthenticationService;
-import nl.han.oose.dea.mitchell.service.PlaylistsService;
-import nl.han.oose.dea.mitchell.service.TracksService;
+import nl.han.oose.dea.mitchell.resource.endpoints.PlaylistsResource;
+import nl.han.oose.dea.mitchell.resource.util.RESTAuthenticator;
+import nl.han.oose.dea.mitchell.service.users.LocalAuthenticationService;
+import nl.han.oose.dea.mitchell.service.business.PlaylistsService;
+import nl.han.oose.dea.mitchell.service.business.TracksService;
 
 import static org.mockito.Mockito.*;
 
 public class PlaylistsResourceTest extends TestCase {
     private PlaylistsResource sut;
+    private RESTAuthenticator mockAuthenticator;
     private PlaylistsService mockPlaylistsService;
-    private AuthenticationService mockAuthenticationService;
     private TracksService mockTracksService;
     private String token;
     private int userid;
 
     public void setUp() {
+        mockAuthenticator = mock(RESTAuthenticator.class);
         mockPlaylistsService = mock(PlaylistsService.class);
-        mockAuthenticationService = mock(AuthenticationService.class);
         mockTracksService = mock(TracksService.class);
         token = "1234-1234-1234";
         userid = 1;
         sut = new PlaylistsResource();
+        sut.setAuthenticator(mockAuthenticator);
         sut.setPlaylistsService(mockPlaylistsService);
-        sut.setAuthenticationService(mockAuthenticationService);
         sut.setTracksService(mockTracksService);
     }
 
     public void testGetPlaylists() {
         // Arrange
         ListOfPlaylists expected = new ListOfPlaylists();
-        doReturn(true).when(mockAuthenticationService).validateToken(token);
-        doReturn(1).when(mockAuthenticationService).getUserIdFromToken(token);
+        doNothing().when(mockAuthenticator).validateUserLogin(token);
+        doReturn(1).when(mockAuthenticator).getUserid();
         when(mockPlaylistsService.getAllPlaylists(userid)).thenReturn(expected);
 
         // Act
@@ -52,8 +54,8 @@ public class PlaylistsResourceTest extends TestCase {
         Playlist playlist = new Playlist();
         String playlistId = "1";
         ListOfPlaylists expected = new ListOfPlaylists();
-        doReturn(true).when(mockAuthenticationService).validateToken(token);
-        doReturn(1).when(mockAuthenticationService).getUserIdFromToken(token);
+        doNothing().when(mockAuthenticator).validateUserLogin(token);
+        doReturn(1).when(mockAuthenticator).getUserid();
         when(mockPlaylistsService.deletePlaylist(userid, playlistId)).thenReturn(expected);
 
         // Act
@@ -68,8 +70,8 @@ public class PlaylistsResourceTest extends TestCase {
         // Arrange
         Playlist playlist = new Playlist();
         ListOfPlaylists expected = new ListOfPlaylists();
-        doReturn(true).when(mockAuthenticationService).validateToken(token);
-        doReturn(1).when(mockAuthenticationService).getUserIdFromToken(token);
+        doNothing().when(mockAuthenticator).validateUserLogin(token);
+        doReturn(1).when(mockAuthenticator).getUserid();
         when(mockPlaylistsService.addPlaylist(userid, playlist)).thenReturn(expected);
 
         // Act
@@ -85,8 +87,8 @@ public class PlaylistsResourceTest extends TestCase {
         String playlistId = "1";
         Playlist playlist = new Playlist();
         ListOfPlaylists expected = new ListOfPlaylists();
-        doReturn(true).when(mockAuthenticationService).validateToken(token);
-        doReturn(1).when(mockAuthenticationService).getUserIdFromToken(token);
+        doNothing().when(mockAuthenticator).validateUserLogin(token);
+        doReturn(1).when(mockAuthenticator).getUserid();
         when(mockPlaylistsService.editPlaylist(userid, playlistId, playlist)).thenReturn(expected);
 
         // Act
@@ -101,8 +103,8 @@ public class PlaylistsResourceTest extends TestCase {
         // Arrange
         String playlistId = "1";
         ListOfTracks listOfTracks = new ListOfTracks();
-        doReturn(true).when(mockAuthenticationService).validateToken(token);
-        doReturn(1).when(mockAuthenticationService).getUserIdFromToken(token);
+        doNothing().when(mockAuthenticator).validateUserLogin(token);
+        doReturn(1).when(mockAuthenticator).getUserid();
         when(mockTracksService.getTracksFromPlaylist(playlistId)).thenReturn(listOfTracks);
 
         // Act
@@ -118,8 +120,8 @@ public class PlaylistsResourceTest extends TestCase {
         String playlistId = "1";
         Track track = new Track();
         ListOfTracks listOfTracks = new ListOfTracks();
-        doReturn(true).when(mockAuthenticationService).validateToken(token);
-        doReturn(1).when(mockAuthenticationService).getUserIdFromToken(token);
+        doNothing().when(mockAuthenticator).validateUserLogin(token);
+        doReturn(1).when(mockAuthenticator).getUserid();
         when(mockTracksService.addTrackToPlaylist(playlistId, track)).thenReturn(listOfTracks);
 
         // Act
@@ -135,8 +137,8 @@ public class PlaylistsResourceTest extends TestCase {
         String playlistId = "1";
         String trackId = "1";
         ListOfTracks listOfTracks = new ListOfTracks();
-        doReturn(true).when(mockAuthenticationService).validateToken(token);
-        doReturn(1).when(mockAuthenticationService).getUserIdFromToken(token);
+        doNothing().when(mockAuthenticator).validateUserLogin(token);
+        doReturn(1).when(mockAuthenticator).getUserid();
         when(mockTracksService.deleteTrackFromPlaylist(playlistId, trackId)).thenReturn(listOfTracks);
 
         // Act

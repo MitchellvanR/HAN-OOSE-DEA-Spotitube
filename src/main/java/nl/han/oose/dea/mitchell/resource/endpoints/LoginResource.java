@@ -1,4 +1,4 @@
-package nl.han.oose.dea.mitchell.resource;
+package nl.han.oose.dea.mitchell.resource.endpoints;
 
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
@@ -8,12 +8,12 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import nl.han.oose.dea.mitchell.domain.dto.login.Credentials;
-import nl.han.oose.dea.mitchell.service.LoginService;
+import nl.han.oose.dea.mitchell.service.interfaces.ILoginService;
 
 @Path("/login")
-public class LoginResource extends Resource {
+public class LoginResource {
 
-    private LoginService loginService;
+    private ILoginService loginService;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -22,7 +22,7 @@ public class LoginResource extends Resource {
         return Response.ok().entity(loginService.login(credentials)).build();
     }
     @Inject
-    public void setLoginService(LoginService loginService) {
+    public void setLoginService(ILoginService loginService) {
         this.loginService = loginService;
     }
 }

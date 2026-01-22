@@ -1,4 +1,4 @@
-package nl.han.oose.dea.mitchell.resource;
+package nl.han.oose.dea.mitchell.resource.endpoints;
 
 import nl.han.oose.dea.mitchell.domain.dto.playlists.Playlist;
 import nl.han.oose.dea.mitchell.domain.dto.tracks.Track;
@@ -6,35 +6,37 @@ import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import nl.han.oose.dea.mitchell.service.PlaylistsService;
-import nl.han.oose.dea.mitchell.service.TracksService;
+import nl.han.oose.dea.mitchell.resource.util.RESTAuthenticator;
+import nl.han.oose.dea.mitchell.service.business.PlaylistsService;
+import nl.han.oose.dea.mitchell.service.business.TracksService;
 
 @Path("/playlists")
-public class PlaylistsResource extends Resource {
+public class PlaylistsResource {
+    private RESTAuthenticator authenticator;
     private PlaylistsService playlistsService;
     private TracksService tracksService;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response getPlaylists(@QueryParam("token") String token) {
-        validateUserLogin(token);
-        return Response.ok().entity(playlistsService.getAllPlaylists(this.userid)).build();
+        authenticator.validateUserLogin(token);
+        return Response.ok().entity(playlistsService.getAllPlaylists(authenticator.getUserid())).build();
     }
 
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deletePlaylist(@QueryParam("token") String token, @PathParam("id") String id) {
-        validateUserLogin(token);
-        return Response.ok().entity(playlistsService.deletePlaylist(this.userid, id)).build();
+        authenticator.validateUserLogin(token);
+        return Response.ok().entity(playlistsService.deletePlaylist(authenticator.getUserid(), id)).build();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addPlaylist(@QueryParam("token") String token, Playlist playlist) {
-        validateUserLogin(token);
-        return Response.ok().entity(playlistsService.addPlaylist(this.userid, playlist)).build();
+        authenticator.validateUserLogin(token);
+        return Response.ok().entity(playlistsService.addPlaylist(authenticator.getUserid(), playlist)).build();
     }
 
     @PUT
@@ -42,15 +44,15 @@ public class PlaylistsResource extends Resource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response editPlaylist(@QueryParam("token") String token, @PathParam("id") String id, Playlist playlist) {
-        validateUserLogin(token);
-        return Response.ok().entity(playlistsService.editPlaylist(this.userid, id, playlist)).build();
+        authenticator.validateUserLogin(token);
+        return Response.ok().entity(playlistsService.editPlaylist(authenticator.getUserid(), id, playlist)).build();
     }
 
     @GET
     @Path("/{id}/tracks")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getTracksFromPlaylist(@QueryParam("token") String token, @PathParam("id") String id) {
-        validateUserLogin(token);
+        authenticator.validateUserLogin(token);
         return Response.ok().entity(tracksService.getTracksFromPlaylist(id)).build();
     }
 
@@ -59,7 +61,7 @@ public class PlaylistsResource extends Resource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response addTrackToPlaylist(@QueryParam("token") String token, @PathParam("id") String id, Track track) {
-        validateUserLogin(token);
+        authenticator.validateUserLogin(token);
         return Response.ok().entity(tracksService.addTrackToPlaylist(id, track)).build();
     }
 
@@ -67,8 +69,13 @@ public class PlaylistsResource extends Resource {
     @Path("/{playlistId}/tracks/{trackId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteTrackFromPlaylist(@QueryParam("token") String token, @PathParam("playlistId") String playlistId, @PathParam("trackId") String trackId) {
-        validateUserLogin(token);
+        authenticator.validateUserLogin(token);
         return Response.ok().entity(tracksService.deleteTrackFromPlaylist(playlistId, trackId)).build();
+    }
+
+    @Inject
+    public void setAuthenticator(RESTAuthenticator restAuthenticator) {
+        this.authenticator = restAuthenticator;
     }
 
     @Inject

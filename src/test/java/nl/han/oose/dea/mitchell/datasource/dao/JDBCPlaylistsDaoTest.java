@@ -1,4 +1,4 @@
-package nl.han.oose.dea.mitchell.dao;
+package nl.han.oose.dea.mitchell.datasource.dao;
 
 import nl.han.oose.dea.mitchell.datasource.dao.JDBCPlaylistsDao;
 import nl.han.oose.dea.mitchell.datasource.datamappers.PlaylistMapper;

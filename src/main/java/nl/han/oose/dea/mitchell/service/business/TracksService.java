@@ -1,10 +1,11 @@
-package nl.han.oose.dea.mitchell.service;
+package nl.han.oose.dea.mitchell.service.business;
 
 import nl.han.oose.dea.mitchell.datasource.interfaces.ITracksDao;
 import nl.han.oose.dea.mitchell.domain.dto.tracks.ListOfTracks;
 import nl.han.oose.dea.mitchell.domain.dto.tracks.Track;
 import jakarta.inject.Inject;
 
+// Pass-through service that delegates tasks to dao classes.
 public class TracksService {
 
     private ITracksDao tracksDao;

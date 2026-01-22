@@ -1,34 +1,36 @@
-package nl.han.oose.dea.mitchell.resource;
+package nl.han.oose.dea.mitchell.resource.endpoints;
 
 import nl.han.oose.dea.mitchell.domain.dto.tracks.ListOfTracks;
 import jakarta.ws.rs.core.Response;
 import junit.framework.TestCase;
-import nl.han.oose.dea.mitchell.service.AuthenticationService;
-import nl.han.oose.dea.mitchell.service.TracksService;
+import nl.han.oose.dea.mitchell.resource.endpoints.TracksResource;
+import nl.han.oose.dea.mitchell.resource.util.RESTAuthenticator;
+import nl.han.oose.dea.mitchell.service.users.LocalAuthenticationService;
+import nl.han.oose.dea.mitchell.service.business.TracksService;
 
 import static org.mockito.Mockito.*;
 import static org.mockito.Mockito.doReturn;
 
 public class TracksResourceTest extends TestCase {
+    private RESTAuthenticator mockAuthenticator;
     private TracksResource sut;
     private TracksService mockTracksService;
-    private AuthenticationService mockAuthenticationService;
     private String token;
 
     public void setUp() {
         mockTracksService = mock(TracksService.class);
-        mockAuthenticationService = mock(AuthenticationService.class);
+        mockAuthenticator = mock(RESTAuthenticator.class);
         sut = new TracksResource();
         sut.setTracksService(mockTracksService);
-        sut.setAuthenticationService(mockAuthenticationService);
+        sut.setAuthenticator(mockAuthenticator);
         token = "1234-1234-1234";
     }
 
     public void testGetAllTracks() {
         // Arrange
         ListOfTracks expected = new ListOfTracks();
-        doReturn(true).when(mockAuthenticationService).validateToken(token);
-        doReturn(1).when(mockAuthenticationService).getUserIdFromToken(token);
+        doNothing().when(mockAuthenticator).validateUserLogin(token);
+        doReturn(1).when(mockAuthenticator).getUserid();
         when(mockTracksService.getAllAvailableTracks(anyInt())).thenReturn(expected);
 
         // Act

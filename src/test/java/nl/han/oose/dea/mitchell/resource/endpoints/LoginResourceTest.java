@@ -1,10 +1,11 @@
-package nl.han.oose.dea.mitchell.resource;
+package nl.han.oose.dea.mitchell.resource.endpoints;
 
 import nl.han.oose.dea.mitchell.domain.dto.login.Credentials;
 import nl.han.oose.dea.mitchell.domain.dto.login.User;
 import jakarta.ws.rs.core.Response;
 import junit.framework.TestCase;
-import nl.han.oose.dea.mitchell.service.LoginService;
+import nl.han.oose.dea.mitchell.resource.endpoints.LoginResource;
+import nl.han.oose.dea.mitchell.service.users.LocalLoginService;
 import nl.han.oose.dea.mitchell.service.exceptions.InvalidCredentialsException;
 
 import static org.junit.Assert.assertThrows;
@@ -12,10 +13,10 @@ import static org.mockito.Mockito.*;
 
 public class LoginResourceTest extends TestCase {
     private LoginResource sut;
-    private LoginService mockLoginService;
+    private LocalLoginService mockLoginService;
 
     public void setUp() {
-        mockLoginService = mock(LoginService.class);
+        mockLoginService = mock(LocalLoginService.class);
         sut = new LoginResource();
         sut.setLoginService(mockLoginService);
     }

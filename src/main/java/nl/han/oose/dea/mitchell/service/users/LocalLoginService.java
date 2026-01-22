@@ -1,16 +1,18 @@
-package nl.han.oose.dea.mitchell.service;
+package nl.han.oose.dea.mitchell.service.users;
 
 import nl.han.oose.dea.mitchell.datasource.interfaces.ILoginDao;
 import nl.han.oose.dea.mitchell.domain.dto.login.Credentials;
 import nl.han.oose.dea.mitchell.domain.dto.login.User;
 import jakarta.inject.Inject;
 import nl.han.oose.dea.mitchell.service.exceptions.InvalidCredentialsException;
+import nl.han.oose.dea.mitchell.service.interfaces.ILoginService;
 
 import java.util.Random;
 
-public class LoginService {
+public class LocalLoginService implements ILoginService {
     private ILoginDao loginDao;
 
+    @Override
     public User login(Credentials credentials) {
         Credentials localCredentials = loginDao.getCredentials(credentials);
         if (localCredentials.getUser().equals(credentials.getUser()) && localCredentials.getPassword().equals(credentials.getPassword())) {
