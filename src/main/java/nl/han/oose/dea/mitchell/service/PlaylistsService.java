@@ -1,12 +1,12 @@
 package nl.han.oose.dea.mitchell.service;
 
-import nl.han.oose.dea.mitchell.datasource.dao.PlaylistsDao;
+import nl.han.oose.dea.mitchell.datasource.interfaces.IPlaylistsDao;
 import nl.han.oose.dea.mitchell.domain.dto.playlists.ListOfPlaylists;
 import nl.han.oose.dea.mitchell.domain.dto.playlists.Playlist;
 import jakarta.inject.Inject;
 
 public class PlaylistsService {
-    private PlaylistsDao playlistsDao;
+    private IPlaylistsDao playlistsDao;
 
     public ListOfPlaylists getAllPlaylists(int userid) {
         return playlistsDao.getAllPlaylists(userid);
@@ -28,7 +28,7 @@ public class PlaylistsService {
     }
 
     @Inject
-    public void setPlaylistsDao(PlaylistsDao playlistsDao) {
+    public void setPlaylistsDao(IPlaylistsDao playlistsDao) {
         this.playlistsDao = playlistsDao;
     }
 }

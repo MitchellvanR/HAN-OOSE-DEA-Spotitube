@@ -1,9 +1,9 @@
-package dao;
+package nl.han.oose.dea.mitchell.dao;
 
-import nl.han.oose.dea.mitchell.datasource.dao.PlaylistsDao;
-import nl.han.oose.dea.mitchell.datasource.dao.TracksDao;
+import nl.han.oose.dea.mitchell.datasource.dao.JDBCPlaylistsDao;
 import nl.han.oose.dea.mitchell.datasource.datamappers.PlaylistMapper;
 import nl.han.oose.dea.mitchell.datasource.exceptions.SQLQueryException;
+import nl.han.oose.dea.mitchell.datasource.interfaces.ITracksDao;
 import nl.han.oose.dea.mitchell.domain.dto.playlists.ListOfPlaylists;
 import nl.han.oose.dea.mitchell.domain.dto.playlists.Playlist;
 import junit.framework.TestCase;
@@ -16,10 +16,10 @@ import java.sql.SQLException;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.*;
 
-public class PlaylistsDaoTest extends TestCase {
-    private PlaylistsDao sut;
+public class JDBCPlaylistsDaoTest extends TestCase {
+    private JDBCPlaylistsDao sut;
     private PlaylistMapper mockPlaylistMapper;
-    private TracksDao mockTracksDao;
+    private ITracksDao mockTracksDao;
     private ListOfTracks mockListOfTracks;
     private PreparedStatement mockPreparedStatement;
     private ResultSet mockResultSet;
@@ -27,11 +27,11 @@ public class PlaylistsDaoTest extends TestCase {
 
     public void setUp() {
         mockPlaylistMapper = mock(PlaylistMapper.class);
-        mockTracksDao = mock(TracksDao.class);
+        mockTracksDao = mock(ITracksDao.class);
         mockListOfTracks = mock(ListOfTracks.class);
         mockPreparedStatement = mock(PreparedStatement.class);
         mockResultSet = mock(ResultSet.class);
-        sut = spy(new PlaylistsDao());
+        sut = spy(new JDBCPlaylistsDao());
         sut.setPlaylistMapper(mockPlaylistMapper);
         sut.setTracksDao(mockTracksDao);
         userid = 1;

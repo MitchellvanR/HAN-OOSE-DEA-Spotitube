@@ -1,6 +1,6 @@
 package nl.han.oose.dea.mitchell.service;
 
-import nl.han.oose.dea.mitchell.datasource.dao.TracksDao;
+import nl.han.oose.dea.mitchell.datasource.interfaces.ITracksDao;
 import nl.han.oose.dea.mitchell.domain.dto.tracks.ListOfTracks;
 import nl.han.oose.dea.mitchell.domain.dto.tracks.Track;
 import junit.framework.TestCase;
@@ -11,10 +11,10 @@ import static org.mockito.Mockito.when;
 
 public class TracksServiceTest extends TestCase {
     private TracksService sut;
-    private TracksDao mockTracksDao;
+    private ITracksDao mockTracksDao;
 
     public void setUp() {
-        mockTracksDao = mock(TracksDao.class);
+        mockTracksDao = mock(ITracksDao.class);
         sut = new TracksService();
         sut.setTracksDao(mockTracksDao);
     }

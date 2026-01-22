@@ -1,6 +1,6 @@
 package nl.han.oose.dea.mitchell.service;
 
-import nl.han.oose.dea.mitchell.datasource.dao.PlaylistsDao;
+import nl.han.oose.dea.mitchell.datasource.interfaces.IPlaylistsDao;
 import nl.han.oose.dea.mitchell.domain.dto.playlists.ListOfPlaylists;
 import nl.han.oose.dea.mitchell.domain.dto.playlists.Playlist;
 import junit.framework.TestCase;
@@ -10,11 +10,11 @@ import static org.mockito.Mockito.when;
 
 public class PlaylistsServiceTest extends TestCase {
     private PlaylistsService sut;
-    private PlaylistsDao mockPlaylistsDao;
+    private IPlaylistsDao mockPlaylistsDao;
     private int userid;
 
     public void setUp() {
-        mockPlaylistsDao = mock(PlaylistsDao.class);
+        mockPlaylistsDao = mock(IPlaylistsDao.class);
         sut = new PlaylistsService();
         sut.setPlaylistsDao(mockPlaylistsDao);
         userid = 1;

@@ -1,6 +1,6 @@
-package dao;
+package nl.han.oose.dea.mitchell.dao;
 
-import nl.han.oose.dea.mitchell.datasource.dao.LoginDao;
+import nl.han.oose.dea.mitchell.datasource.dao.JDBCLoginDao;
 import nl.han.oose.dea.mitchell.datasource.datamappers.CredentialsMapper;
 import nl.han.oose.dea.mitchell.datasource.exceptions.SQLQueryException;
 import nl.han.oose.dea.mitchell.domain.dto.login.Credentials;
@@ -13,8 +13,8 @@ import java.sql.SQLException;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.*;
 
-public class LoginDaoTest extends TestCase {
-    private LoginDao sut;
+public class JDBCLoginDaoTest extends TestCase {
+    private JDBCLoginDao sut;
     private CredentialsMapper mockCredentialsMapper;
     private PreparedStatement mockPreparedStatement;
     private ResultSet mockResultSet;
@@ -23,7 +23,7 @@ public class LoginDaoTest extends TestCase {
         mockCredentialsMapper = mock(CredentialsMapper.class);
         mockPreparedStatement = mock(PreparedStatement.class);
         mockResultSet = mock(ResultSet.class);
-        sut = spy(new LoginDao());
+        sut = spy(new JDBCLoginDao());
         sut.setCredentialsMapper(mockCredentialsMapper);
     }
 

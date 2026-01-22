@@ -1,10 +1,10 @@
 package nl.han.oose.dea.mitchell.service;
 
 import jakarta.inject.Inject;
-import nl.han.oose.dea.mitchell.datasource.dao.AuthenticationDao;
+import nl.han.oose.dea.mitchell.datasource.interfaces.IAuthenticationDao;
 
 public class AuthenticationService {
-    private AuthenticationDao authenticationDao;
+    private IAuthenticationDao authenticationDao;
 
     public boolean validateToken(String token) {
         return authenticationDao.validateToken(token);
@@ -16,7 +16,7 @@ public class AuthenticationService {
     }
 
     @Inject
-    public void setAuthenticationDao(AuthenticationDao authenticationDao) {
+    public void setAuthenticationDao(IAuthenticationDao authenticationDao) {
         this.authenticationDao = authenticationDao;
     }
 }

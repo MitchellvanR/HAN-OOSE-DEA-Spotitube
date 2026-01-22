@@ -1,13 +1,15 @@
 package nl.han.oose.dea.mitchell.datasource.dao;
 
 import nl.han.oose.dea.mitchell.datasource.exceptions.SQLQueryException;
+import nl.han.oose.dea.mitchell.datasource.interfaces.IAuthenticationDao;
 import nl.han.oose.dea.mitchell.datasource.util.SQLString;
-import nl.han.oose.dea.mitchell.domain.dto.login.Credentials;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class AuthenticationDao extends Dao {
+public class JDBCAuthenticationDao extends Dao implements IAuthenticationDao {
+
+    @Override
     public boolean validateToken(String token) {
         try (ResultSet resultSet = prepareStatement(String.format(SQLString.AUTHENTICATE_USER.label, token)).executeQuery()) {
             return resultSet.next();
@@ -18,6 +20,7 @@ public class AuthenticationDao extends Dao {
         }
     }
 
+    @Override
     public int getUserIdFromToken(String token) {
         try (ResultSet resultSet = prepareStatement(String.format(SQLString.GET_USER_ID_FROM_TOKEN.label, token)).executeQuery()) {
             if (resultSet.next()) {

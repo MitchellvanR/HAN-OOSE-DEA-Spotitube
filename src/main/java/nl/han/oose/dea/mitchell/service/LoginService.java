@@ -1,6 +1,6 @@
 package nl.han.oose.dea.mitchell.service;
 
-import nl.han.oose.dea.mitchell.datasource.dao.LoginDao;
+import nl.han.oose.dea.mitchell.datasource.interfaces.ILoginDao;
 import nl.han.oose.dea.mitchell.domain.dto.login.Credentials;
 import nl.han.oose.dea.mitchell.domain.dto.login.User;
 import jakarta.inject.Inject;
@@ -9,7 +9,7 @@ import nl.han.oose.dea.mitchell.service.exceptions.InvalidCredentialsException;
 import java.util.Random;
 
 public class LoginService {
-    private LoginDao loginDao;
+    private ILoginDao loginDao;
 
     public User login(Credentials credentials) {
         Credentials localCredentials = loginDao.getCredentials(credentials);
@@ -32,7 +32,7 @@ public class LoginService {
     }
 
     @Inject
-    public void setLoginDao(LoginDao loginDao) {
+    public void setLoginDao(ILoginDao loginDao) {
         this.loginDao = loginDao;
     }
 }

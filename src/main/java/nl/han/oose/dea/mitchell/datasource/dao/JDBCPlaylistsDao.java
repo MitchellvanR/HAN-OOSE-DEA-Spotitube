@@ -2,26 +2,28 @@ package nl.han.oose.dea.mitchell.datasource.dao;
 
 import nl.han.oose.dea.mitchell.datasource.datamappers.PlaylistMapper;
 import nl.han.oose.dea.mitchell.datasource.exceptions.SQLQueryException;
+import nl.han.oose.dea.mitchell.datasource.interfaces.IPlaylistsDao;
+import nl.han.oose.dea.mitchell.datasource.interfaces.ITracksDao;
 import nl.han.oose.dea.mitchell.datasource.util.SQLString;
 import nl.han.oose.dea.mitchell.domain.dto.playlists.ListOfPlaylists;
 import nl.han.oose.dea.mitchell.domain.dto.playlists.Playlist;
 import jakarta.inject.Inject;
 import nl.han.oose.dea.mitchell.domain.dto.tracks.ListOfTracks;
-import nl.han.oose.dea.mitchell.domain.dto.tracks.Track;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 
-public class PlaylistsDao extends Dao {
-    private TracksDao tracksDao;
+public class JDBCPlaylistsDao extends Dao implements IPlaylistsDao {
+    private ITracksDao tracksDao;
     private PlaylistMapper playlistMapper;
 
+    @Override
     public ListOfPlaylists getAllPlaylists(int userid) {
         ListOfTracks tracks = tracksDao.getAllTracksInPlaylists();
         return playlistGetRequest(SQLString.GET_ALL_PLAYLISTS.label, userid, tracks);
     }
 
+    @Override
     public ListOfPlaylists deletePlaylist(int userid, String id) {
         try {
             prepareStatement(String.format(SQLString.DELETE_PLAYLIST.label, id, userid)).execute();
@@ -33,6 +35,7 @@ public class PlaylistsDao extends Dao {
         }
     }
 
+    @Override
     public boolean playlistHasTracks(String id) {
         try (ResultSet resultSet = prepareStatement(String.format(SQLString.CHECK_IF_PLAYLIST_HAS_TRACKS.label, id)).executeQuery()) {
             return resultSet.next();
@@ -43,6 +46,7 @@ public class PlaylistsDao extends Dao {
         }
     }
 
+    @Override
     public void emptyPlaylist(String id) {
         try {
             prepareStatement(String.format(SQLString.EMPTY_PLAYLIST.label, id)).execute();
@@ -53,6 +57,7 @@ public class PlaylistsDao extends Dao {
         }
     }
 
+    @Override
     public ListOfPlaylists addPlaylist(int userid, String playlistName) {
         try {
             prepareStatement(String.format(SQLString.ADD_PLAYLIST.label, playlistName, userid)).execute();
@@ -64,6 +69,7 @@ public class PlaylistsDao extends Dao {
         }
     }
 
+    @Override
     public ListOfPlaylists editPlaylist(int userid, String id, Playlist playlist) {
         try {
             prepareStatement(String.format(SQLString.UPDATE_PLAYLIST.label, playlist.getName(), id, userid)).execute();
@@ -86,7 +92,7 @@ public class PlaylistsDao extends Dao {
     }
 
     @Inject
-    public void setTracksDao(TracksDao tracksDao) { this.tracksDao = tracksDao; }
+    public void setTracksDao(ITracksDao tracksDao) { this.tracksDao = tracksDao; }
 
     @Inject
     public void setPlaylistMapper(PlaylistMapper playlistMapper) {

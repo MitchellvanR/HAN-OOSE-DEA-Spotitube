@@ -1,6 +1,6 @@
-package dao;
+package nl.han.oose.dea.mitchell.dao;
 
-import nl.han.oose.dea.mitchell.datasource.dao.TracksDao;
+import nl.han.oose.dea.mitchell.datasource.dao.JDBCTracksDao;
 import nl.han.oose.dea.mitchell.datasource.datamappers.TrackMapper;
 import nl.han.oose.dea.mitchell.datasource.exceptions.SQLQueryException;
 import nl.han.oose.dea.mitchell.domain.dto.tracks.ListOfTracks;
@@ -14,8 +14,8 @@ import java.sql.SQLException;
 import static org.junit.Assert.assertThrows;
 import static org.mockito.Mockito.*;
 
-public class TracksDaoTest extends TestCase {
-    private TracksDao sut;
+public class JDBCTracksDaoTest extends TestCase {
+    private JDBCTracksDao sut;
     private TrackMapper mockTrackMapper;
     private PreparedStatement mockPreparedStatement;
     private ResultSet mockResultSet;
@@ -24,7 +24,7 @@ public class TracksDaoTest extends TestCase {
         mockTrackMapper = mock(TrackMapper.class);
         mockPreparedStatement = mock(PreparedStatement.class);
         mockResultSet = mock(ResultSet.class);
-        sut = spy(new TracksDao());
+        sut = spy(new JDBCTracksDao());
         sut.setTrackMapper(mockTrackMapper);
     }
 

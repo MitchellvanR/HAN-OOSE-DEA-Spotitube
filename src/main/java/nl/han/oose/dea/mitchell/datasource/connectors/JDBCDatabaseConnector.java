@@ -1,4 +1,4 @@
-package nl.han.oose.dea.mitchell.datasource.util;
+package nl.han.oose.dea.mitchell.datasource.connectors;
 
 import nl.han.oose.dea.mitchell.datasource.exceptions.PropertyLoadException;
 import nl.han.oose.dea.mitchell.datasource.exceptions.SQLConnectionException;
@@ -12,12 +12,12 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
 
-public class DatabaseProperties {
-    private static volatile DatabaseProperties instance;
+public class JDBCDatabaseConnector {
+    private static volatile JDBCDatabaseConnector instance;
     private final Properties properties;
     private Connection connection;
 
-    private DatabaseProperties() {
+    private JDBCDatabaseConnector() {
         properties = new Properties();
         try {
             Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
@@ -33,11 +33,11 @@ public class DatabaseProperties {
         }
     }
 
-    public static DatabaseProperties getInstance() {
+    public static JDBCDatabaseConnector getInstance() {
         if (instance == null) {
-            synchronized (DatabaseProperties.class) {
+            synchronized (JDBCDatabaseConnector.class) {
                 if (instance == null) {
-                    instance = new DatabaseProperties();
+                    instance = new JDBCDatabaseConnector();
                 }
             }
         }

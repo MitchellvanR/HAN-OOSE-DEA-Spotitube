@@ -1,6 +1,6 @@
 package nl.han.oose.dea.mitchell.service;
 
-import nl.han.oose.dea.mitchell.datasource.dao.LoginDao;
+import nl.han.oose.dea.mitchell.datasource.interfaces.ILoginDao;
 import nl.han.oose.dea.mitchell.domain.dto.login.Credentials;
 import nl.han.oose.dea.mitchell.domain.dto.login.User;
 import junit.framework.TestCase;
@@ -11,10 +11,10 @@ import static org.mockito.Mockito.*;
 
 public class LoginServiceTest extends TestCase {
     private LoginService sut;
-    private LoginDao mockLoginDao;
+    private ILoginDao mockLoginDao;
 
     public void setUp() {
-        mockLoginDao = mock(LoginDao.class);
+        mockLoginDao = mock(ILoginDao.class);
         sut = spy(new LoginService());
         sut.setLoginDao(mockLoginDao);
     }
